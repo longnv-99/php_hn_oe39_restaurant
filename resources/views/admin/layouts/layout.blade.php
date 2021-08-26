@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/plugins/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/dist/css/admin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/home.css') }}">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

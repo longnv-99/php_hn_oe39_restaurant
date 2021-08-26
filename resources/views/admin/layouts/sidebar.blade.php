@@ -16,7 +16,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 @foreach (config('menu') as $key => $value)
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="{{ route($value['route']) }}" class="nav-link">
                             <i class="nav-icon fas {{ $value['icon'] }}"></i>
                             <p>{{ __('messages.' . $value['label']) }}</p>
                         </a>

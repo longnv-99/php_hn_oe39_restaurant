@@ -13,7 +13,7 @@ return [
     ],
     [
         'label' => 'book-management',
-        'route' => '',
+        'route' => 'books.index',
         'icon' => 'fa-book-open',
     ],
 ];
