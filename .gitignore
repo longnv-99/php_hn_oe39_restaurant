@@ -16,3 +16,6 @@ yarn-error.log
 /.vscode
 /public/css/*
 /public/js/*
+/public/scss/*
+/storage/framework/cache
+/storage/framework/sessions
