@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -23,5 +24,13 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function changeLanguage($lang)
+    {
+        $language = ($lang == 'vi' || $lang == 'en') ? $lang : config('app.locale');
+        Session::put('language', $language);
+
+        return redirect()->back();
     }
 }

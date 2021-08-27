@@ -21,3 +21,4 @@ Route::get('/', [AdminController::class, 'index']);
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('books', BookController::class);
+Route::get('language/{lang}', [App\Http\Controllers\HomeController::class, 'changeLanguage'])->name('change-language');

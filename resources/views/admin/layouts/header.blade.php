@@ -9,12 +9,12 @@
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a href="" class="dropdown-item lang-item">
+            <a href="{{ route('change-language', ['en']) }}" class="dropdown-item lang-item">
                 <i class="flag-icon flag-icon-gb-eng mr-2"></i>{{ __('messages.english') }}
             </a>
         </li>
         <li class="nav-item">
-            <a href="" class="dropdown-item lang-item">
+            <a href="{{ route('change-language', ['vi']) }}" class="dropdown-item lang-item">
                 <i class="flag-icon flag-icon-vn mr-2"></i>{{ __('messages.vietnamese') }}
             </a>
         </li>
