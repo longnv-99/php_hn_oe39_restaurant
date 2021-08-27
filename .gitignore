@@ -19,3 +19,4 @@ yarn-error.log
 /public/scss/*
 /storage/framework/cache
 /storage/framework/sessions
+/public/uploads/
