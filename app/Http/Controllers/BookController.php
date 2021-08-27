@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
 use App\Models\Book;
+use App\Models\Category;
+use App\Models\Image;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -26,7 +31,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::whereNotIn('id', Category::distinct()->pluck('parent_id')->toArray())->get();
+        
+        return view('admin.books.create', compact('categories'));
     }
 
     /**
@@ -35,9 +42,21 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        //
+        $data = $request->all();
+        $book = Book::create($data);
+
+        $file = $data['image'];
+        $image = [];
+        $image['imageable_type'] = get_class($book);
+        $image['imageable_id'] = $book->id;
+        $image['path'] = $book->id . '_' . $file->getClientOriginalName();
+
+        Image::create($image);
+        $file->move(public_path('uploads'), $image['path']);
+
+        return redirect()->route('books.index')->with('success', __('messages.add-book-success'));
     }
 
     /**

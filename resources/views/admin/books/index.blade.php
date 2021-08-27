@@ -3,7 +3,7 @@
 @section('title', __('messages.list-book'))
 @section('main')
 <div class="content-header">
-    <a href="#" class="btn btn-outline-primary">{{ __('messages.add-book') }}</a>
+    <a href="{{ route('books.create') }}" class="btn btn-outline-primary">{{ __('messages.add-book') }}</a>
     <form class="form-inline">
         <div class="form-group">
             <input type="text" name="title" class="form-control" placeholder="{{ __('messages.enter-title') }}">
@@ -15,7 +15,7 @@
 </div>
 <hr>
 @if ($books->isEmpty())
-    <h2>{{ __('message.no-book') }}</h2>
+    <h2>{{ __('messages.no-book') }}</h2>
 @else
     <table class="table table-hover table-bordered">
         <thead class="thead-dark">

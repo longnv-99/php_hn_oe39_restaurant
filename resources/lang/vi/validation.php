@@ -99,7 +99,7 @@ return [
     'password' => ' password không đúng.',
     'present' => ' :attribute phải có mặt.',
     'regex' => ' :attribute định dạng không hợp lệ.',
-    'required' => ' :attribute được yêu cầu.',
+    'required' => ' :attribute không được để trống.',
     'required_if' => ' :attribute được yêu cầu khi :other là :value.',
     'required_unless' => ':attribute được yêu cầu unless :other is in :values.',
     'required_with' => ':attribute được yêu cầu khi :values có mặt.',
@@ -152,6 +152,12 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'title' => 'Tên sách',
+        'number_of_page' => 'Số trang',
+        'published_date' => 'Ngày xuất bản',
+        'author' => 'Tên tác giả',
+        'image' => 'Ảnh',
+    ],
 
 ];

@@ -29,16 +29,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    @if (Session::has('error'))
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ Session::get('error') }}
-                                        </div>
-                                    @endif
-                                    @if (Session::has('success'))
-                                        <div class="alert alert-success" role="alert">
-                                            {{ Session::get('success') }}
-                                        </div>
-                                    @endif
+                                    @include('flash-message')
                                     @yield('main')
                                 </div>
                             </div>
@@ -52,7 +43,7 @@
     <script src="{{ asset('bower_components/adminLTE/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/dist/js/adminlte.min.js') }}"></script>
-
+    <script src="{{ asset('js/home.js') }}" type="text/javascript"></script>
     @yield('js')
 
 </body>
