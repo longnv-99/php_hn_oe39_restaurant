@@ -6,3 +6,7 @@ $(document).on('change', '.custom-file-input', function() {
 $(".alert.alert-block").fadeTo(2000, 500).slideUp(500, function() {
     $(".alert.alert-block").slideUp(500);
 });
+
+$(document).on('click', '.clickable-row', function() {
+    window.location = $(this).data('href');
+});

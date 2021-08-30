@@ -28,7 +28,7 @@
         </thead>
         <tbody>
             @foreach ($books as $book)
-                <tr>
+                <tr class="clickable-row" data-href="{{ route('books.show', $book) }}">
                     <td scope="row">{{ $loop->index + 1 }}</td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->category->name }}</td>

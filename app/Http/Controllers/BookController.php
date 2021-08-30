@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Image;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -67,7 +65,9 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = Book::with(['category', 'image'])->findOrFail($id);
+
+        return view('admin.books.show', compact('book'));
     }
 
     /**
@@ -78,7 +78,10 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        //
+        $book = Book::with(['category', 'image'])->findOrFail($id);
+        $categories = Category::whereNotIn('id', Category::distinct()->pluck('parent_id')->toArray())->get();
+
+        return view('admin.books.edit', compact('book', 'categories'));
     }
 
     /**
@@ -88,9 +91,18 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBookRequest $request, $id)
     {
-        //
+        $book = Book::with('image')->findOrFail($id);
+        $book->update($request->all());
+        if (isset($request->image)) {
+            $file = $request->image;
+            $path = $id . '_' . $file->getClientOriginalName();
+            Image::where('id', $book->image->id)->update(['path' => $path]);
+            $file->move(public_path('uploads'), $path);
+        }
+
+        return redirect()->route('books.index')->with('success', __('messages.update-book-success'));
     }
 
     /**
@@ -101,6 +113,10 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $book->delete();
+        $book->image->delete();
+
+        return redirect()->route('books.index')->with('success', __('messages.delete-book-success'));
     }
 }

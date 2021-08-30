@@ -52,9 +52,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function images()
+    public function image()
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
     public function reviews()
