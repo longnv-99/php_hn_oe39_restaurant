@@ -30,4 +30,5 @@ return [
     'save' => 'Lưu',
     'choose-file' => 'Chọn ảnh',
     'select-cate' => 'Chọn danh mục',
+    'category' => 'Danh mục',
 ];

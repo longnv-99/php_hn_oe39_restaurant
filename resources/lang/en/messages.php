@@ -30,4 +30,5 @@ return [
     'save' => 'Save',
     'choose-file' => 'Choose file',
     'select-cate' => 'Select category',
+    'category' => 'Category',
 ];
