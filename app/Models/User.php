@@ -77,13 +77,32 @@ class User extends Authenticatable
         return $this->morphMany(Like::class, 'likeable');
     }
 
-    public function bookRequests()
-    {
-        return $this->hasMany(BookRequest::class);
-    }
-
     public function follows()
     {
         return $this->hasMany(Follow::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($user) {
+            $user->image()->delete();
+
+            foreach ($user->comments()->get() as $comment) {
+                $comment->delete();
+            }
+
+            foreach ($user->reviews()->get() as $review) {
+                $review->delete();
+            }
+
+            foreach ($user->likes()->get() as $like) {
+                $like->delete();
+            }
+
+            foreach ($user->favorites()->get() as $favorite) {
+                $favorite->delete();
+            }
+        });
     }
 }

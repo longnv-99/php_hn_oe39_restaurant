@@ -16,3 +16,4 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 mix.js('resources/js/home.js', 'public/js')
     .postCss('resources/css/home.css', 'public/css');
+mix.js('resources/js/manage_user.js', 'public/js');

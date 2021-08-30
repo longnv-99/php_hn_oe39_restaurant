@@ -125,6 +125,8 @@ return [
 
     'is_active' => 1,
 
+    'is_inactive' => 0,
+
     'user_role_id' => 2,
 
     'admin_role_id' => 1,
@@ -132,6 +134,8 @@ return [
     'default_avatar_path' => 'default-ava.jpg',
 
     'display' => 1,
+
+    'paginate' => 5,
 
     /*
     |--------------------------------------------------------------------------
