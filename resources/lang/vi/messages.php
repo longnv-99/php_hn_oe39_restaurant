@@ -31,4 +31,13 @@ return [
     'choose-file' => 'Chọn ảnh',
     'select-cate' => 'Chọn danh mục',
     'category' => 'Danh mục',
+    'delete-book' => 'Xóa sách',
+    'created-at' => 'Thêm vào ngày',
+    'updated-at' => 'Cập nhật lần cuối',
+    'book-detail' => 'Thông tin chi tiết',
+    'confirm' => 'Xác nhận',
+    'confirm-message' => 'Bạn có chắc chắn muốn xóa sách này?',
+    'cancel' => 'Hủy',
+    'ok' => 'OK',
+    'delete-book-success' => 'Đã xóa',
 ];

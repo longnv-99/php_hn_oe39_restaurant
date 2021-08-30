@@ -31,4 +31,13 @@ return [
     'choose-file' => 'Choose file',
     'select-cate' => 'Select category',
     'category' => 'Category',
+    'delete-book' => 'Delete book',
+    'created-at' => 'Created at',
+    'updated-at' => 'Updated at',
+    'book-detail' => 'Book detail',
+    'confirm' => 'Confirm',
+    'confirm-message' => 'Are you sure to delete this book?',
+    'cancel' => 'Cancel',
+    'ok' => 'OK',
+    'delete-book-success' => 'Deleted book',
 ];
