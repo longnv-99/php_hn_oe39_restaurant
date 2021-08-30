@@ -17,8 +17,10 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [AdminController::class, 'index']);
 Auth::routes();
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::resource('books', BookController::class);
-Route::get('language/{lang}', [App\Http\Controllers\HomeController::class, 'changeLanguage'])->name('change-language');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('language/{lang}', [HomeController::class, 'changeLanguage'])->name('change-language');
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.home');
+    Route::resource('books', BookController::class);
+});

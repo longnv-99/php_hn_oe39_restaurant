@@ -10,3 +10,9 @@ $(".alert.alert-block").fadeTo(2000, 500).slideUp(500, function() {
 $(document).on('click', '.clickable-row', function() {
     window.location = $(this).data('href');
 });
+
+$(document).on('click', '#logout-btn', function () {
+    event.preventDefault();
+    document.getElementById('logout-form').submit();
+});
+
