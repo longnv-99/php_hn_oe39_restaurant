@@ -131,6 +131,8 @@ return [
 
     'default_avatar_path' => 'default-ava.jpg',
 
+    'display' => 1,
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

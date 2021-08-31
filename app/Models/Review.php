@@ -36,4 +36,14 @@ class Review extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($review) {
+            foreach ($review->comments()->get() as $comment) {
+                $comment->delete();
+            }
+        });
+    }
 }

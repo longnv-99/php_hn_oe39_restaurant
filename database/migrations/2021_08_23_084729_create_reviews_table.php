@@ -17,6 +17,7 @@ class CreateReviewsTable extends Migration
             $table->id();
             $table->string('content');
             $table->boolean('display');
+            $table->integer('rate');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('book_id')->constrained();
             $table->timestamps();

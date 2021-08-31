@@ -77,6 +77,6 @@ class RegisterController extends Controller
     {
         $user = $this->create($request->all());
 
-        return redirect('login')->with('message', __('message.register_success'));
+        return redirect('login')->with('message', __('messages.register_success'));
     }
 }

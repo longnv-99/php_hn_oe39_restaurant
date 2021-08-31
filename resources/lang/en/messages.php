@@ -50,4 +50,12 @@ return [
     'forgot_password' => 'Forgot your password ?',
     'register' => 'Register',
     'home' => 'Home',
+    'register_success' => 'Register Successful',
+    'unauthorize' => 'You dont have permission to do this',
+    'create-review-success' => 'Create Review Successful',
+    'edit-review-success' => 'Edit Review Successful',
+    'delete-review-success' => 'Delete Review Successful',
+    'create-comment-success' => 'Create Comment Successful',
+    'edit-comment-success' => 'Edit Comment Successful',
+    'delete-comment-success' => 'Delete Comment Successful',
 ];
