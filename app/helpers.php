@@ -19,3 +19,10 @@ if (!function_exists('checkValidUser')) {
         return false;
     }
 }
+
+if (!function_exists('formatOutputDate')) {
+    function formatOutputDate($date)
+    {
+        return date_format(new DateTime($date), "d-m-Y");
+    }
+}

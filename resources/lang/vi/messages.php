@@ -80,4 +80,10 @@ return [
     'show-review-success' => 'Hiển thị đánh giá thành công',
     'hide-comment-success' => 'Ẩn bình luận thành công',
     'show-comment-success' => 'Hiển thị bình luận thành công',
+    'review-history' => 'Lịch sử Review',
+    'no-review' => 'Hiện không có bài Review nào',
+    'rate' => 'Đánh giá',
+    'content' => 'Nội dung',
+    'date' => 'Ngày',
+    'book-name' => 'Tên sách',
 ];

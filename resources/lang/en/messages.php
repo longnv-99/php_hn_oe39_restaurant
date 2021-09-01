@@ -80,4 +80,10 @@ return [
     'show-review-success' => 'Show review success',
     'hide-comment-success' => 'Hide comment success',
     'show-comment-success' => 'Show comment success',
+    'review-history' => 'Review History',
+    'no-review' => 'There is no Review',
+    'rate' => 'Rate',
+    'content' => 'Content',
+    'date' => 'Date',
+    'book-name' => 'Book Name',
 ];

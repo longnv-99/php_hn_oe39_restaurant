@@ -41,4 +41,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('reviews', ReviewController::class)->only([
         'destroy', 'update', 'store'
     ]);
+    Route::get('profile', [UserController::class, 'myProfile'])->name('my-profile');
+    Route::get('profile/{id}', [UserController::class, 'getUserProfile'])->name('profile');
 });
