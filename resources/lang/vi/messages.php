@@ -50,4 +50,12 @@ return [
     'forgot_password' => 'Quên mật khẩu ?',
     'register' => 'Đăng kí tài khoản',
     'home' => 'Trang chủ',
+    'register_success' => 'Đăng kí thành công',
+    'unauthorize' => 'Bạn không có quyền để làm điều này',
+    'create-review-success' => 'Tạo Review thành công',
+    'edit-review-success' => 'Sửa Review thành công',
+    'delete-review-success' => 'Xóa Review thành công',
+    'create-comment-success' => 'Thêm bình luận thành công',
+    'edit-comment-success' => 'Sửa bình luận thành công',
+    'delete-comment-success' => 'Xóa bình luận thành công',
 ];

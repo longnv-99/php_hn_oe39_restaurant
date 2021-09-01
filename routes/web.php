@@ -5,6 +5,8 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +25,12 @@ Route::get('language/{lang}', [HomeController::class, 'changeLanguage'])->name('
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
     Route::resource('books', BookController::class);
+});
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('comments', CommentController::class)->only([
+        'destroy', 'update', 'store'
+    ]);
+    Route::resource('reviews', ReviewController::class)->only([
+        'destroy', 'update', 'store'
+    ]);
 });
