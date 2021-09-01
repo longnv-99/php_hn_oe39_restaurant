@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
@@ -24,7 +25,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('language/{lang}', [HomeController::class, 'changeLanguage'])->name('change-language');
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
+    Route::get('users/enable/{user}', [UserController::class, 'enable'])->name('users.enable');
+    Route::get('users/disable/{user}', [UserController::class, 'disable'])->name('users.disable');
     Route::resource('books', BookController::class);
+    Route::resource('users', UserController::class);
 });
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('comments', CommentController::class)->only([

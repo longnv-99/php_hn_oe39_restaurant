@@ -3,12 +3,12 @@
 return [
     [
         'label' => 'dashboard',
-        'route' => 'books.index',
+        'route' => 'users.index',
         'icon' => 'fa-home',
     ],
     [
         'label' => 'user-management',
-        'route' => 'books.index',
+        'route' => 'users.index',
         'icon' => 'fa-users',
     ],
     [
