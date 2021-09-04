@@ -2,6 +2,8 @@
     "/js/app.js": "/js/app.js",
     "/js/home.js": "/js/home.js",
     "/js/manage_user.js": "/js/manage_user.js",
+    "/js/manage_review_comment.js": "/js/manage_review_comment.js",
     "/css/app.css": "/css/app.css",
+    "/css/manage_review_comment.css": "/css/manage_review_comment.css",
     "/css/home.css": "/css/home.css"
 }

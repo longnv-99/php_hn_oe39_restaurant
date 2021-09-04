@@ -20,7 +20,7 @@
         </li>
         <li class="nav-item">
             <p id="navbarDropdown" class="nav-item dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                <img src="{{ asset('uploads/' . Auth::user()->image->path) }}" id="user-img" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ asset('uploads/users/' . Auth::user()->image->path) }}" id="user-img" class="img-circle elevation-2" alt="User Image">
                 {{ Auth::user()->username }}
             </p>
 

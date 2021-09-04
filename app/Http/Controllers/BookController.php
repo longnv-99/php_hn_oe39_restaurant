@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Review;
 
 class BookController extends Controller
 {
@@ -17,7 +18,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with('category')->orderBy('updated_at', 'DESC')->get();
+        $books = Book::with(['category', 'image'])->orderBy('updated_at', 'DESC')->paginate(config('app.paginate'));
 
         return view('admin.books.index', compact('books'));
     }
@@ -52,7 +53,7 @@ class BookController extends Controller
         $image['path'] = $book->id . '_' . $file->getClientOriginalName();
 
         Image::create($image);
-        $file->move(public_path('uploads'), $image['path']);
+        $file->move(public_path('uploads/books'), $image['path']);
 
         return redirect()->route('books.index')->with('success', __('messages.add-book-success'));
     }
@@ -66,8 +67,9 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::with(['category', 'image'])->findOrFail($id);
+        $reviews = Review::with('user.image', 'comments')->where('book_id', $id)->get();
 
-        return view('admin.books.show', compact('book'));
+        return view('admin.books.show', compact('book', 'reviews'));
     }
 
     /**

@@ -104,4 +104,18 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', __('messages.delete-comment-success'));
     }
+
+    public function hide($id)
+    {
+        Comment::findOrFail($id)->update(['display' => config('app.non-display')]);
+
+        return response()->json(['success' => __('messages.hide-comment-success')]);
+    }
+
+    public function view($id)
+    {
+        Comment::findOrFail($id)->update(['display' => config('app.display')]);
+
+        return response()->json(['success' => __('messages.show-comment-success')]);
+    }
 }

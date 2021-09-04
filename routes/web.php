@@ -27,6 +27,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
     Route::get('users/enable/{user}', [UserController::class, 'enable'])->name('users.enable');
     Route::get('users/disable/{user}', [UserController::class, 'disable'])->name('users.disable');
+    Route::get('reviews/hide/{review}', [ReviewController::class, 'hide'])->name('reviews.hide');
+    Route::get('reviews/view/{review}', [ReviewController::class, 'view'])->name('reviews.view');
+    Route::get('comments/hide/{comment}', [CommentController::class, 'hide'])->name('comments.hide');
+    Route::get('comments/view/{comment}', [CommentController::class, 'view'])->name('comments.view');
     Route::resource('books', BookController::class);
     Route::resource('users', UserController::class);
 });

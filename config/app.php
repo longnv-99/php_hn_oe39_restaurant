@@ -135,6 +135,8 @@ return [
 
     'display' => 1,
 
+    'non-display' => 0,
+
     'paginate' => 5,
 
     /*
