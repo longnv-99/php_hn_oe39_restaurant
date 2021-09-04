@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12 col-sm-6">
                     <div class="col-12">
-                        <img src="{{ asset('uploads/' . $book->image->path) }}" class="product-image">
+                        <img src="{{ asset('uploads/books/' . $book->image->path) }}" class="product-image">
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -36,7 +36,58 @@
             </div>
         </div>
     </div>
-</div>
+
+    <div class="container mb-5 mt-5">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="text-center mb-5" id="list-review-comment">{{ __('messages.list-review-comment') }}</h3>
+                            @foreach ($reviews as $review)
+                                <span hidden class="review-display">{{ $review->display }}</span>
+                                <div class="media mt-4">
+                                    <img id="user-img" class="mr-3 rounded-circle" alt="User Review" src="{{ asset('uploads/users/' . $review->user->image->path) }}" />
+                                    <div class="media-body">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h5>{{ $review->user->fullname }}</h5>
+                                                <div>
+                                                    <a href="{{ route('reviews.hide', $review) }}" class="badge badge-danger rv-hide" id="{{ $review->id }}">{{ __('messages.hide') }}</a>
+                                                    <a href="{{ route('reviews.view', $review) }}" class="badge badge-primary rv-show" id="{{ $review->id }}">{{ __('messages.show') }}</a>
+                                                    <span class="rv-success" id="{{ $review->id }}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="review-content" id="{{ $review->id }}">{{ $review->content }}</span>
+                                        @foreach ($review->comments as $comment)
+                                            <span hidden class="comment-display">{{ $comment->display }}</span>
+                                            <div class="media mt-3">
+                                                <img id="user-img" class="rounded-circle" alt="User Comment" src="{{ asset('uploads/users/' . $comment->user->image->path) }}" />
+                                                <div class="media-body">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h5>{{ $comment->user->fullname }}</h5>
+                                                            <div>
+                                                                <a href="{{ route('comments.hide', $comment) }}" class="badge badge-danger cmt-hide cmt-hide-rv-{{ $comment->review_id }}" id="{{ $comment->id }}">{{ __('messages.hide') }}</a>
+                                                                <a href="{{ route('comments.view', $comment) }}" class="badge badge-primary cmt-show cmt-show-rv-{{ $comment->review_id }}" id="{{ $comment->id }}">{{ __('messages.show') }}</a>
+                                                                <span class="cmt-success" id="{{ $comment->id }}"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="comment-content cmt-content-rv-{{ $comment->review_id }}" id="{{ $comment->id }}">{{ $comment->content }}</span>
+                                                </div>
+                                            </div>
+                                        @endforeach    
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- confirm modal -->
@@ -63,4 +114,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+
+<script src="{{ asset('js/manage_review_comment.js') }}"></script>
+
 @endsection

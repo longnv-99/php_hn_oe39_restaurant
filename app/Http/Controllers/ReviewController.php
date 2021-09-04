@@ -6,6 +6,7 @@ use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateReviewRequest;
 use App\Http\Requests\EditReviewRequest;
+use App\Models\Comment;
 
 class ReviewController extends Controller
 {
@@ -103,5 +104,21 @@ class ReviewController extends Controller
         }
 
         return redirect()->back()->with('success', __('messages.delete-review-success'));
+    }
+
+    public function hide($id)
+    {
+        Review::findOrFail($id)->update(['display' => config('app.non-display')]);
+        Comment::where('review_id', $id)->update(['display' => config('app.non-display')]);
+
+        return response()->json(['success' => __('messages.hide-review-success')]);
+    }
+
+    public function view($id)
+    {
+        Review::findOrFail($id)->update(['display' => config('app.display')]);
+        Comment::where('review_id', $id)->update(['display' => config('app.display')]);
+
+        return response()->json(['success' => __('messages.show-review-success')]);
     }
 }

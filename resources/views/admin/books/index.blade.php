@@ -21,15 +21,17 @@
         <thead class="thead-dark">
             <tr>
                 <th class="text-center">{{ __('messages.stt') }}</th>
+                <th class="text-center">{{ __('messages.image') }}</th>
                 <th class="text-center">{{ __('messages.title') }}</th>
                 <th class="text-center">{{ __('messages.category') }}</th>
                 <th class="text-center">{{ __('messages.author') }}</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($books as $book)
+            @foreach ($books as $key => $book)
                 <tr class="clickable-row" data-href="{{ route('books.show', $book) }}">
-                    <td scope="row">{{ $loop->index + 1 }}</td>
+                    <td scope="row">{{ $books->firstItem() + $key }}</td>
+                    <td><img src="{{ asset('uploads/books/' . $book->image->path) }}" alt="" id="img-upload"></td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->category->name }}</td>
                     <td>{{ $book->author }}</td>
@@ -37,5 +39,9 @@
             @endforeach
         </tbody>
     </table>
-    @endif
+@endif
+<br>
+<div>
+    {{ $books->links() }}
+</div>
 @endsection
