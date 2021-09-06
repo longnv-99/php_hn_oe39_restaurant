@@ -2,25 +2,14 @@
 
 @section('title', __('messages.list-book'))
 @section('main')
-<form class="form-inline" action="{{ route('books.search-title') }}">
-    <div class="form-group">
-        @if (isset($title))
-            <input type="text" name="title" value="{{ $title }}" id="" class="form-control" placeholder="{{ __('messages.enter-title') }}">
-        @else
-            <input type="text" name="title" id="" class="form-control" placeholder="{{ __('messages.enter-title') }}">
-        @endif
-    </div>
-    <button type="submit" class="btn btn-primary" id="btn-search">
-        <i class="fas fa-search"></i>
-    </button>
-</form>
+<h2>{{ $category->name }}</h2>
 <hr>
 <div class="row" id="all-book">
 @foreach ($books as $book)
     <div class="col-book col-12 col-md-3">
         <div class="card-book card-info border-secondary">
             <div class="card-book-body card-body">
-                <a href="{{ route('books.detail', $book) }}">
+                <a href="">
                     <img class="card-img-top" src="{{ asset('uploads/books/' . $book->image->path) }}" alt="">
                 </a>
                 <h5 class="book-title">{{ $book->title }}</h5>

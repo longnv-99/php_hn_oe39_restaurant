@@ -6,10 +6,12 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Image;
 use App\Models\Like;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
@@ -125,6 +127,57 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('success', __('messages.delete-book-success'));
     }
 
+    public function searchByCategory($category_id)
+    {
+        $category = Category::findOrFail($category_id);
+
+        $books = Book::with('image')
+            ->where('category_id', $category_id)
+            ->addSelect(['total_like' => Like::select(DB::raw('count(*)'))
+            ->whereColumn('books.id', 'likes.likeable_id')
+            ->where('likeable_type', 'App\Models\Book')])
+            ->get();
+
+        $likes = Like::where('user_id', Auth::user()->id)
+            ->where('likeable_type', 'App\Models\Book')
+            ->pluck('likeable_id')
+            ->toArray();
+
+        $favorites = Favorite::where('user_id', Auth::user()->id)->pluck('book_id')->toArray();
+
+        $categoryParents = session('categoryParents');
+        $categoryChildren = session('categoryChildren');
+    
+        return view('user.search_book', compact([
+            'category',
+            'books',
+            'likes',
+            'favorites',
+            'categoryParents',
+            'categoryChildren',
+        ]));
+    }
+
+    public function getDetail($id)
+    {
+        $book = Book::with(['category', 'image', 'likes'])->findOrFail($id);
+        $reviews = Review::with('comments', 'user', 'likes')
+            ->where('book_id', '=', $id)
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+        
+        $avarageRating = 0;
+        if (count($reviews)) {
+            $totalScore = 0;
+            foreach ($reviews as $review) {
+                $totalScore += $review['rate'];
+            }
+            $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
+        }
+
+        return view('book-detail', compact('book', 'reviews', 'avarageRating'));
+    }
+
     public function searchByTitle(Request $request)
     {
         $title = $request->title;
@@ -136,28 +189,23 @@ class BookController extends Controller
             ->where('likeable_type', 'App\Models\Book')])
             ->get();
 
+        $likes = Like::where('user_id', Auth::user()->id)
+            ->where('likeable_type', 'App\Models\Book')
+            ->pluck('likeable_id')
+            ->toArray();
+
+        $favorites = Favorite::where('user_id', Auth::user()->id)->pluck('book_id')->toArray();
+
         $categoryParents = session('categoryParents');
         $categoryChildren = session('categoryChildren');
 
-        return view('user.index', compact('books', 'title', 'categoryParents', 'categoryChildren'));
-    }
-        
-    public function getDetail($id)
-    {
-        $book = Book::with(['category', 'image', 'likes'])->findOrFail($id);
-        $reviews = Review::with('comments', 'user', 'likes')
-            ->where('book_id', '=', $id)
-            ->orderBy('updated_at', 'DESC')
-            ->get();
-        $avarageRating = 0;
-        if (count($reviews)) {
-            $totalScore = 0;
-            foreach ($reviews as $review) {
-                $totalScore += $review['rate'];
-            }
-            $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
-        }
-
-        return view('book-detail', compact('book', 'reviews', 'avarageRating'));
+        return view('user.index', compact([
+            'books',
+            'title',
+            'likes',
+            'favorites',
+            'categoryParents',
+            'categoryChildren',
+        ]));
     }
 }
