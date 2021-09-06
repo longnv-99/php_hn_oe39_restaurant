@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
+use App\Models\Category;
+use App\Models\Like;
 use App\Models\User;
 use App\Models\Review;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -131,5 +135,23 @@ class UserController extends Controller
         $user->dob = formatOutputDate($user->dob);
         
         return view('profile', compact(['reviewHistory','user']));
+    }
+    
+    public function home()
+    {
+        $books = Book::with('image')->addSelect(['total_like' => Like::select(DB::raw('count(*)'))
+            ->whereColumn('books.id', 'likes.likeable_id')
+            ->where('likeable_type', 'App\Models\Book')])
+            ->get();
+
+        $categoryParents = Category::all()->where('parent_id', '=', config('app.category_parent_id'));
+        $categoryChildren = Category::all()->where('parent_id', '!=', config('app.category_parent_id'));
+    
+        session([
+            'categoryParents' => $categoryParents,
+            'categoryChildren' => $categoryChildren,
+        ]);
+
+        return view('user.index', compact('books', 'categoryParents', 'categoryChildren'));
     }
 }

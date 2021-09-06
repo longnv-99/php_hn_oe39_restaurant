@@ -10,7 +10,7 @@ return [
     'username' => 'Tên đăng nhập',
     'fullname' => 'Họ tên',
     'dob' => 'Ngày sinh',
-    'title' => 'Tiêu đề',
+    'title' => 'Tên sách',
     'author' => 'Tác giả',
     'number-of-page' => 'Số trang',
     'publish-date' => 'Ngày xuất bản',
@@ -86,4 +86,7 @@ return [
     'content' => 'Nội dung',
     'date' => 'Ngày',
     'book-name' => 'Tên sách',
+    'user' => 'Người dùng',
+    'add-to-favorite' => 'Thêm vào yêu thích',
+    'user-page' => 'Trang người dùng',
 ];

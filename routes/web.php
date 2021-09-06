@@ -35,6 +35,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::resource('users', UserController::class);
 });
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('users/home', [UserController::class, 'home'])->name('users.home');
+    Route::get('books/searchByTitle', [BookController::class, 'searchByTitle'])->name('books.search-title');
+    Route::get('books/searchByCategory/{category}', [BookController::class, 'searchByCategory'])
+        ->name('books.search-category');
     Route::resource('comments', CommentController::class)->only([
         'destroy', 'update', 'store'
     ]);

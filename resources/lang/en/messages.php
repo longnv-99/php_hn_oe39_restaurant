@@ -86,4 +86,7 @@ return [
     'content' => 'Content',
     'date' => 'Date',
     'book-name' => 'Book Name',
+    'user' => 'User',
+    'add-to-favorite' => 'Add to favorite',
+    'user-page' => 'User Page',
 ];
