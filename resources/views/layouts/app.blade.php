@@ -19,6 +19,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/dist/css/admin.css') }}">
 </head>
 <body>
     <div id="app">
@@ -64,7 +65,7 @@
                                             {{ __('messages.admin-page') }}
                                         </a>
                                     @endif
-                                    <a class="dropdown-item" href="{{ route('my-profile') }}">
+                                    <a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">
                                         {{ __('messages.profile') }}
                                     </a>
                                     @if (auth()->user()->role_id == config('app.user_role_id'))
