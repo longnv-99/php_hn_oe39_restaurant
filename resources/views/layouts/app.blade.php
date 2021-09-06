@@ -64,7 +64,7 @@
                                             {{ __('messages.admin-page') }}
                                         </a>
                                     @endif
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('my-profile') }}">
                                         {{ __('messages.profile') }}
                                     </a>
                                     <a class="dropdown-item" href="#" id="logout-btn">

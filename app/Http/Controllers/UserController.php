@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Review;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -105,5 +107,29 @@ class UserController extends Controller
         } catch (Exception $ex) {
             return redirect()->route('users.index')->with('error', __('messages.delete-user-failed'));
         }
+    }
+
+    public function myProfile()
+    {
+        $reviewHistory = Review::where('user_id', '=', getAuthUserId())
+                        ->where('display', '=', config('app.display'))
+                        ->orderBy('updated_at', 'DESC')
+                        ->get();
+        $user = Auth::user();
+        $user->dob = formatOutputDate($user->dob);
+
+        return view('profile', compact(['reviewHistory','user']));
+    }
+
+    public function getUserProfile($id)
+    {
+        $reviewHistory = Review::where('user_id', '=', $id)
+                        ->where('display', '=', config('app.display'))
+                        ->orderBy('updated_at', 'DESC')
+                        ->get();
+        $user = User::where('is_active', '=', config('app.is_active'))->with('image')->findOrFail($id);
+        $user->dob = formatOutputDate($user->dob);
+        
+        return view('profile', compact(['reviewHistory','user']));
     }
 }
