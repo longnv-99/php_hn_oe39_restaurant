@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateReviewRequest;
 use App\Http\Requests\EditReviewRequest;
 use App\Models\Comment;
+use App\Models\Like;
 
 class ReviewController extends Controller
 {
@@ -38,9 +39,16 @@ class ReviewController extends Controller
      */
     public function store(CreateReviewRequest $request)
     {
-        $data = $request->all();
-        $data['display'] = config('app.display');
-        Review::create($data);
+        $review = Review::where('user_id', '=', getAuthUserId())
+                ->where('book_id', '=', $request->book_id)
+                ->get();
+        if (count($review)) {
+            return redirect()->back()->with('error', __('messages.already-review-book'));
+        } else {
+            $data = $request->all();
+            $data['display'] = config('app.display');
+            Review::create($data);
+        }
 
         return redirect()->back()->with('success', __('messages.create-review-success'));
     }
@@ -120,5 +128,25 @@ class ReviewController extends Controller
         Comment::where('review_id', $id)->update(['display' => config('app.display')]);
 
         return response()->json(['success' => __('messages.show-review-success')]);
+    }
+
+    public function rate($id)
+    {
+        $review = Review::findOrFail($id);
+        $like = Like::where('user_id', '=', getAuthUserId())
+                ->where('likeable_type', '=', get_class($review))
+                ->where('likeable_id', '=', $id)
+                ->get();
+        if (count($like)) {
+            return redirect()->back()->with('error', __('messages.already-rate-this-review'));
+        } else {
+            Like::create([
+                'user_id' => getAuthUserId(),
+                'likeable_type' => get_class($review),
+                'likeable_id' => $id,
+            ]);
+        }
+
+        return redirect()->back()->with('success', __('messages.rate-review-success'));
     }
 }

@@ -96,4 +96,13 @@ return [
     'follow' => 'Follow',
     'unfollow' => 'Unfollow',
     'follower' => 'Follower',
+    'review' => 'Review',
+    'review-list' => 'Review List',
+    'add-to-favorite' => 'Add to Favorite',
+    'rate' => 'Rate',
+    'leave-a-review' => 'Leave a review about this book',
+    'leave-a-comment' => 'Leave a comment about this review',
+    'comment' => 'Comment',
+    'cancel' => 'Cancel',
+    'edit' => 'Edit',
 ];

@@ -96,4 +96,13 @@ return [
     'follow' => 'Theo dõi',
     'unfollow' => 'Bỏ theo dõi',
     'follower' => 'Người theo dõi',
+    'review' => 'Đánh giá',
+    'review-list' => 'Danh sách đánh giá',
+    'add-to-favorite' => 'Thêm vào yêu thích',
+    'rate' => 'Đánh giá',
+    'leave-a-review' => 'Để lại đánh giá về quyển sách',
+    'leave-a-comment' => 'Để lại bình luận về đánh giá này',
+    'comment' => 'Bình luận',
+    'cancel' => 'Hủy',
+    'edit' => 'Chỉnh sửa',
 ];
