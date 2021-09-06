@@ -59,7 +59,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @if(auth()->user()->role_id == config('app.admin_role_id'))
+                                    @if (auth()->user()->role_id == config('app.admin_role_id'))
                                         <a class="dropdown-item" href="{{ route('admin.home') }}">
                                             {{ __('messages.admin-page') }}
                                         </a>
@@ -67,10 +67,14 @@
                                     <a class="dropdown-item" href="{{ route('my-profile') }}">
                                         {{ __('messages.profile') }}
                                     </a>
+                                    @if (auth()->user()->role_id == config('app.user_role_id'))
+                                        <a class="dropdown-item" href="{{ route('users.home') }}">
+                                            {{ __('messages.user-page') }}
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="#" id="logout-btn">
                                         {{ __('messages.logout') }}
                                     </a>
-                                    
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

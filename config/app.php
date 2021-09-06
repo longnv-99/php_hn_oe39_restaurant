@@ -139,6 +139,8 @@ return [
 
     'paginate' => 5,
 
+    'category_parent_id' => 0,
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

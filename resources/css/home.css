@@ -6,3 +6,66 @@
 .clickable-row {
     cursor: pointer;
 }
+
+.nav-sidebar .nav-link>.right {
+    position: absolute;
+    left: 1rem;
+    right: auto;
+    top: .7rem;
+}
+
+.nav-sidebar .nav-link p {
+    display: inline;
+    margin: 0;
+    margin-left: 1rem;
+    white-space: normal;
+}
+
+.nav-sidebar .menu-is-opening>.nav-link i.right, .nav-sidebar .menu-open>.nav-link i.right {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.nav-sidebar .nav-item .nav-treeview {
+    display: none;
+}
+
+.col-book {
+    height: 370px;
+    margin-bottom: 15px;
+}
+
+.card-book {
+    height: 100%;
+    border: 1px solid;
+}
+
+.card-book:hover {
+    background-color: rgb(228, 228, 228);
+    transition: 0.4s;
+}
+
+.card-book-body {
+    height: 65%;
+    display: block;
+}
+
+h5.book-title {
+    margin-top: 10px;
+    margin-bottom: 0;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.card-book-body .card-img-top {
+    width: 100%;
+    height: 100%;
+}
+
+.card-book-body .book-action {
+    display: flex;
+    justify-content: space-between;
+}

@@ -7,7 +7,10 @@ use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Like;
 use App\Models\Review;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -101,7 +104,7 @@ class BookController extends Controller
             $file = $request->image;
             $path = $id . '_' . $file->getClientOriginalName();
             Image::where('id', $book->image->id)->update(['path' => $path]);
-            $file->move(public_path('uploads'), $path);
+            $file->move(public_path('uploads/books'), $path);
         }
 
         return redirect()->route('books.index')->with('success', __('messages.update-book-success'));
@@ -120,5 +123,22 @@ class BookController extends Controller
         $book->image->delete();
 
         return redirect()->route('books.index')->with('success', __('messages.delete-book-success'));
+    }
+
+    public function searchByTitle(Request $request)
+    {
+        $title = $request->title;
+
+        $books = Book::with('image')
+            ->where('title', 'like', '%' . $title . '%')
+            ->addSelect(['total_like' => Like::select(DB::raw('count(*)'))
+            ->whereColumn('books.id', 'likes.likeable_id')
+            ->where('likeable_type', 'App\Models\Book')])
+            ->get();
+
+        $categoryParents = session('categoryParents');
+        $categoryChildren = session('categoryChildren');
+
+        return view('user.index', compact('books', 'title', 'categoryParents', 'categoryChildren'));
     }
 }
