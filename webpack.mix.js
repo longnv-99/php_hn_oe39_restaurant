@@ -16,6 +16,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 mix.js('resources/js/home.js', 'public/js')
     .postCss('resources/css/home.css', 'public/css');
-mix.js('resources/js/manage_user.js', 'public/js');
-mix.js('resources/js/manage_review_comment.js', 'public/js');
-mix.postCss('resources/css/manage_review_comment.css', 'public/css');
+mix.js('resources/js/manage_user.js', 'public/js')
+    .js('resources/js/manage_review_comment.js', 'public/js')
+    .js('resources/js/profile.js', 'public/js')
+    .postCss('resources/css/manage_review_comment.css', 'public/css');

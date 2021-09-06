@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Follow;
 use App\Models\Like;
 use App\Models\User;
 use App\Models\Review;
@@ -57,7 +58,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        /**get following and follower of user */
+        $user = User::with(['followers.followed.image'])
+            ->withCount('followers as number_of_follower')
+            ->with(['followeds.follower.image'])
+            ->withCount('followeds as number_of_followed')
+            ->findOrFail($id);
+
+        $relationship = Follow::where('follower_id', Auth::id())
+            ->where('followed_id', $id)
+            ->whereNull('deleted_at')
+            ->get();
+
+        return view('user.profile', compact('user', 'relationship'));
     }
 
     /**

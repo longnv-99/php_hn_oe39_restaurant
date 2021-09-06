@@ -69,3 +69,7 @@ h5.book-title {
     display: flex;
     justify-content: space-between;
 }
+
+#custom {
+    margin-left: 0px;
+}
