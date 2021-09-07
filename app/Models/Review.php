@@ -15,6 +15,7 @@ class Review extends Model
         'display',
         'user_id',
         'book_id',
+        'rate',
     ];
 
     public function likes()

@@ -141,4 +141,20 @@ class BookController extends Controller
 
         return view('user.index', compact('books', 'title', 'categoryParents', 'categoryChildren'));
     }
+        
+    public function getDetail($id)
+    {
+        $book = Book::with(['category', 'image', 'likes'])->findOrFail($id);
+        $reviews = Review::with('comments', 'user', 'likes')
+            ->where('book_id', '=', $id)
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+        $totalScore = 0;
+        foreach ($reviews as $review) {
+            $totalScore += $review['rate'];
+        }
+        $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
+
+        return view('book-detail', compact('book', 'reviews', 'avarageRating'));
+    }
 }

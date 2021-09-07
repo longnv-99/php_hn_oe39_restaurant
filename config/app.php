@@ -140,6 +140,18 @@ return [
     'paginate' => 5,
 
     'category_parent_id' => 0,
+    
+    'two-decimal' => 2,
+
+    'max-rating' => 5,
+
+    'one-star' => 1,
+
+    'two-star' => 2,
+
+    'three-star' => 3,
+    
+    'four-star' => 4,
 
     /*
     |--------------------------------------------------------------------------
