@@ -149,11 +149,14 @@ class BookController extends Controller
             ->where('book_id', '=', $id)
             ->orderBy('updated_at', 'DESC')
             ->get();
-        $totalScore = 0;
-        foreach ($reviews as $review) {
-            $totalScore += $review['rate'];
+        $avarageRating = 0;
+        if (count($reviews)) {
+            $totalScore = 0;
+            foreach ($reviews as $review) {
+                $totalScore += $review['rate'];
+            }
+            $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
         }
-        $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
 
         return view('book-detail', compact('book', 'reviews', 'avarageRating'));
     }

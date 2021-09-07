@@ -20,7 +20,7 @@
     <div class="col-book col-12 col-md-3">
         <div class="card-book card-info border-secondary">
             <div class="card-book-body card-body">
-                <a href="">
+                <a href="{{ route('books.detail', $book) }}">
                     <img class="card-img-top" src="{{ asset('uploads/books/' . $book->image->path) }}" alt="">
                 </a>
                 <h5 class="book-title">{{ $book->title }}</h5>
