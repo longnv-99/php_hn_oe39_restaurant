@@ -89,4 +89,11 @@ return [
     'user' => 'User',
     'add-to-favorite' => 'Add to favorite',
     'user-page' => 'User Page',
+    'my-profile' => 'My profile',
+    'follower-num' => 'Followers',
+    'following' => 'Following',
+    'edit-profile' => 'Edit profile',
+    'follow' => 'Follow',
+    'unfollow' => 'Unfollow',
+    'follower' => 'Follower',
 ];

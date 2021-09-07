@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ReviewController;
 
 /*
@@ -45,6 +46,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('reviews', ReviewController::class)->only([
         'destroy', 'update', 'store'
     ]);
+
+    Route::resource('users', UserController::class);
+    Route::resource('follows', FollowController::class)->only([
+        'destroy', 'store'
+    ]);
+
     Route::get('profile', [UserController::class, 'myProfile'])->name('my-profile');
     Route::get('profile/{id}', [UserController::class, 'getUserProfile'])->name('profile');
 });

@@ -89,4 +89,11 @@ return [
     'user' => 'Người dùng',
     'add-to-favorite' => 'Thêm vào yêu thích',
     'user-page' => 'Trang người dùng',
+    'my-profile' => 'Trang cá nhân của tôi',
+    'follower-num' => 'Số người theo dõi',
+    'following' => 'Đang theo dõi',
+    'edit-profile' => 'Chỉnh sửa trang cá nhân',
+    'follow' => 'Theo dõi',
+    'unfollow' => 'Bỏ theo dõi',
+    'follower' => 'Người theo dõi',
 ];
