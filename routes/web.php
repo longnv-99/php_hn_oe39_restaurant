@@ -24,7 +24,6 @@ use App\Http\Controllers\ReviewController;
 */
 
 Auth::routes();
-Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('language/{lang}', [HomeController::class, 'changeLanguage'])->name('change-language');
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
@@ -39,11 +38,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::resource('books', BookController::class);
 });
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('users/home', [UserController::class, 'home'])->name('users.home');
-    Route::get('books/searchByTitle', [BookController::class, 'searchByTitle'])->name('books.search-title');
-    Route::get('books/searchByCategory/{category}', [BookController::class, 'searchByCategory'])
-        ->name('books.search-category');
-
     Route::resource('comments', CommentController::class)->only([
         'destroy', 'update', 'store'
     ]);
@@ -65,4 +59,9 @@ Route::group(['middleware' => 'auth'], function () {
     
     Route::get('reviews/rate/{review}', [ReviewController::class, 'rate'])->name('reviews.rate');
 });
+
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('books/searchByTitle', [BookController::class, 'searchByTitle'])->name('books.search-title');
+Route::get('books/searchByCategory/{category}', [BookController::class, 'searchByCategory'])
+    ->name('books.search-category');
 Route::get('book-detail/{id}', [BookController::class, 'getDetail'])->name('books.detail');

@@ -49,7 +49,7 @@ class Book extends Model
         static::deleting(function ($book) {
             $book->image()->delete();
 
-            foreach ($book->reviews->get() as $review) {
+            foreach ($book->reviews()->get() as $review) {
                 $review->delete();
             }
 

@@ -51,8 +51,11 @@
                                     <div class="media-body">
                                         <div class="row">
                                             <div class="col-8">
-                                                <h5>{{ $review->user->fullname }}</h5>
+                                                <h5>{{ $review->user->username }}</h5>
+                                                <span class="text-muted">{{ formatOutputDate($review->updated_at) }}</span>
                                                 <div>
+                                                    <span>{{ $review->rate }}&#11088;</span>
+                                                    <span>{{ count($review->comments) }} {{ __('messages.comment') }}</span>
                                                     <a href="{{ route('reviews.hide', $review) }}" class="badge badge-danger rv-hide" id="{{ $review->id }}">{{ __('messages.hide') }}</a>
                                                     <a href="{{ route('reviews.view', $review) }}" class="badge badge-primary rv-show" id="{{ $review->id }}">{{ __('messages.show') }}</a>
                                                     <span class="rv-success" id="{{ $review->id }}"></span>
@@ -67,7 +70,7 @@
                                                 <div class="media-body">
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <h5>{{ $comment->user->fullname }}</h5>
+                                                            <h5>{{ $comment->user->username }}</h5>
                                                             <div>
                                                                 <a href="{{ route('comments.hide', $comment) }}" class="badge badge-danger cmt-hide cmt-hide-rv-{{ $comment->review_id }}" id="{{ $comment->id }}">{{ __('messages.hide') }}</a>
                                                                 <a href="{{ route('comments.view', $comment) }}" class="badge badge-primary cmt-show cmt-show-rv-{{ $comment->review_id }}" id="{{ $comment->id }}">{{ __('messages.show') }}</a>

@@ -18,7 +18,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <a href="{{ route('users.home') }}">{{ __('messages.back-home') }}</a>
+                            <a href="{{ route('home.index') }}">{{ __('messages.back-home') }}</a>
                         </div>
                         <div class="col-sm-3">
                             <h1>{{ __('messages.profile') }}</h1>

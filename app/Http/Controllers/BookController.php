@@ -131,29 +131,43 @@ class BookController extends Controller
 
         $books = Book::with('image')
             ->where('category_id', $category_id)
-            ->addSelect(['total_like' => Like::select(DB::raw('count(*)'))
-            ->whereColumn('books.id', 'likes.likeable_id')
-            ->where('likeable_type', 'App\Models\Book')])
-            ->get();
-
-        $likes = Like::where('user_id', Auth::user()->id)
-            ->where('likeable_type', 'App\Models\Book')
-            ->pluck('likeable_id')
-            ->toArray();
-
-        $favorites = Favorite::where('user_id', Auth::user()->id)->pluck('book_id')->toArray();
+            ->addSelect([
+                'total_like' => Like::select(DB::raw('count(*)'))
+                ->whereColumn('books.id', 'likes.likeable_id')
+                ->where('likeable_type', 'App\Models\Book'),
+                'total_review' => Review::select(DB::raw('count(*)'))
+                ->whereColumn('books.id', 'reviews.book_id'),
+                'total_rate' => Review::select(DB::raw('sum(rate)'))
+                ->whereColumn('books.id', 'reviews.book_id'),
+            ])->get();
 
         $categoryParents = session('categoryParents');
         $categoryChildren = session('categoryChildren');
-    
-        return view('user.search_book', compact([
-            'category',
-            'books',
-            'likes',
-            'favorites',
-            'categoryParents',
-            'categoryChildren',
-        ]));
+
+        if (Auth::check()) {
+            $likes = Like::where('user_id', Auth::id())
+                ->where('likeable_type', 'App\Models\Book')
+                ->pluck('likeable_id')
+                ->toArray();
+
+            $favorites = Favorite::where('user_id', Auth::id())->pluck('book_id')->toArray();
+
+            return view('user.search_book', compact([
+                'category',
+                'books',
+                'likes',
+                'favorites',
+                'categoryParents',
+                'categoryChildren',
+            ]));
+        } else {
+            return view('user.search_book', compact([
+                'category',
+                'books',
+                'categoryParents',
+                'categoryChildren',
+            ]));
+        }
     }
 
     public function getDetail($id)
@@ -173,6 +187,21 @@ class BookController extends Controller
             $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
         }
 
+        if (Auth::check()) {
+            $likeBook_ids = Like::where('user_id', Auth::id())
+                ->where('likeable_type', 'App\Models\Book')
+                ->where('likeable_id', $id)
+                ->pluck('likeable_id')
+                ->toArray();
+
+            $favoriteBook_ids = Favorite::where('user_id', Auth::id())
+                ->where('book_id', $id)
+                ->pluck('book_id')
+                ->toArray();
+
+            return view('book-detail', compact('book', 'likeBook_ids', 'favoriteBook_ids', 'reviews', 'avarageRating'));
+        }
+
         return view('book-detail', compact('book', 'reviews', 'avarageRating'));
     }
 
@@ -182,28 +211,42 @@ class BookController extends Controller
 
         $books = Book::with('image')
             ->where('title', 'like', '%' . $title . '%')
-            ->addSelect(['total_like' => Like::select(DB::raw('count(*)'))
-            ->whereColumn('books.id', 'likes.likeable_id')
-            ->where('likeable_type', 'App\Models\Book')])
-            ->get();
-
-        $likes = Like::where('user_id', Auth::user()->id)
-            ->where('likeable_type', 'App\Models\Book')
-            ->pluck('likeable_id')
-            ->toArray();
-
-        $favorites = Favorite::where('user_id', Auth::user()->id)->pluck('book_id')->toArray();
+            ->addSelect([
+                'total_like' => Like::select(DB::raw('count(*)'))
+                ->whereColumn('books.id', 'likes.likeable_id')
+                ->where('likeable_type', 'App\Models\Book'),
+                'total_review' => Review::select(DB::raw('count(*)'))
+                ->whereColumn('books.id', 'reviews.book_id'),
+                'total_rate' => Review::select(DB::raw('sum(rate)'))
+                ->whereColumn('books.id', 'reviews.book_id'),
+            ])->get();
 
         $categoryParents = session('categoryParents');
         $categoryChildren = session('categoryChildren');
 
-        return view('user.index', compact([
-            'books',
-            'title',
-            'likes',
-            'favorites',
-            'categoryParents',
-            'categoryChildren',
-        ]));
+        if (Auth::check()) {
+            $likes = Like::where('user_id', Auth::id())
+                ->where('likeable_type', 'App\Models\Book')
+                ->pluck('likeable_id')
+                ->toArray();
+
+            $favorites = Favorite::where('user_id', Auth::id())->pluck('book_id')->toArray();
+
+            return view('user.index', compact([
+                'title',
+                'books',
+                'likes',
+                'favorites',
+                'categoryParents',
+                'categoryChildren',
+            ]));
+        } else {
+            return view('user.index', compact([
+                'title',
+                'books',
+                'categoryParents',
+                'categoryChildren',
+            ]));
+        }
     }
 }

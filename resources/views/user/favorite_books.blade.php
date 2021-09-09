@@ -9,10 +9,19 @@
     <div class="col-book col-12 col-md-3">
         <div class="card-book card-info border-secondary">
             <div class="card-book-body card-body">
-                <a href="">
+                <a href="{{ route('books.detail', $book) }}">
                     <img class="card-img-top" src="{{ asset('uploads/books/' . $book->image->path) }}" alt="">
                 </a>
-                <h5 class="book-title">{{ $book->title }}</h5>
+                <h5 class="book-title">
+                    <div>{{ $book->title }}</div>
+                    @if (Auth::check())
+                        @if ($book->total_review)
+                            <div class="badge">{{ round($book->total_rate/$book->total_review, config('app.two-decimal')) }}&#11088;</div>
+                        @else
+                            <div class="badge">0&#11088;</div>
+                        @endif
+                    @endif
+                </h5>
                 <br>
                 <div class="book-action">
                     @if (in_array($book->id, $likes))
@@ -26,9 +35,9 @@
                             <span id="total-like-{{ $book->id }}">{{ $book->total_like }}</span>
                         </button>
                     @endif
-                    <button class="btn btn-success btn-unmark-favorite" id="{{ $book->id }}">
-                        <i class="fas fa-bookmark"></i>
-                        <span>{{ __('messages.mark-favorite') }}</span>
+                    <button class="btn btn-danger btn-unmark-favorite" id="{{ $book->id }}">
+                        <i class="fas fa-heart"></i>
+                        <span>{{ __('messages.favorite') }}</span>
                     </button>
                 </div>
             </div>

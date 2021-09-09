@@ -73,8 +73,8 @@ $(document).on('click', '.btn-mark-favorite', function (ev) {
         success: function (response) {
             var response = JSON.parse(response);
             if (response.statusCode == 200) {
-                btn_mark_favorite.removeClass('btn-mark-favorite btn-outline-success');
-                btn_mark_favorite.addClass('btn-unmark-favorite btn-success');
+                btn_mark_favorite.removeClass('btn-mark-favorite btn-outline-danger');
+                btn_mark_favorite.addClass('btn-unmark-favorite btn-danger');
             }
         }
     });
@@ -99,8 +99,8 @@ $(document).on('click', '.btn-unmark-favorite', function (ev) {
         success: function (response) {
             var response = JSON.parse(response);
             if (response.statusCode == 200) {
-                btn_unmark_favorite.removeClass('btn-unmark-favorite btn-success');
-                btn_unmark_favorite.addClass('btn-mark-favorite btn-outline-success');
+                btn_unmark_favorite.removeClass('btn-unmark-favorite btn-danger');
+                btn_unmark_favorite.addClass('btn-mark-favorite btn-outline-danger');
             }
         }
     });

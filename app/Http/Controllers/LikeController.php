@@ -14,7 +14,7 @@ class LikeController extends Controller
         $book_id = $request->book_id;
         $book = Book::findOrFail($book_id);
         Like::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'likeable_id' => $book_id,
             'likeable_type' => get_class($book),
         ]);
@@ -26,7 +26,7 @@ class LikeController extends Controller
     {
         $book = Book::findOrFail($book_id);
         Like::withTrashed()
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', Auth::id())
             ->where('likeable_id', $book_id)
             ->where('likeable_type', get_class($book))
             ->forceDelete();
