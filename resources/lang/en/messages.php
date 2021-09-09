@@ -106,4 +106,5 @@ return [
     'comment' => 'Comment',
     'cancel' => 'Cancel',
     'edit' => 'Edit',
+    'back-home' => 'Back to home',
 ];

@@ -42,4 +42,24 @@ class Book extends Model
     {
         return $this->hasMany(Favorite::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($book) {
+            $book->image()->delete();
+
+            foreach ($book->reviews->get() as $review) {
+                $review->delete();
+            }
+
+            foreach ($book->likes()->get() as $like) {
+                $like->delete();
+            }
+
+            foreach ($book->favorites()->get() as $favorite) {
+                $favorite->delete();
+            }
+        });
+    }
 }

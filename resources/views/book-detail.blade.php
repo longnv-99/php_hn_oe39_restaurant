@@ -71,13 +71,13 @@
 						<div class="comment d-flex mb-4">
 							<div class="flex-shrink-0">
 								<div class="avatar avatar-sm rounded-circle">
-									<img class="avatar-img" src="{{ asset('uploads/users/' . $review->user->image->path) }}" alt="">
+									<img id="user-img" class="avatar-img" src="{{ asset('uploads/users/' . $review->user->image->path) }}" alt="">
 								</div>
 							</div>
 							<div class="flex-grow-1 ms-2 ms-sm-3">
 								<div class="comment-meta d-flex align-items-baseline">
 									<h6 class="ml-2 mr-2">
-									<a href="{{ route('profile', $review->user) }}">
+									<a href="{{ route('users.show', $review->user) }}">
 										{{ $review->user->username }}
 									</a>  
 									</h6>
@@ -158,13 +158,13 @@
 										<div class="reply d-flex mb-2">
 										<div class="flex-shrink-0">
 											<div class="avatar avatar-sm rounded-circle">
-											<img class="avatar-img" src="{{ asset('uploads/users/' . $comment->user->image->path) }}" alt="">
+											<img id="user-img" class="avatar-img" src="{{ asset('uploads/users/' . $comment->user->image->path) }}" alt="">
 											</div>
 										</div>
 										<div class="flex-grow-1 ms-2 ms-sm-3">
 											<div class="reply-meta d-flex align-items-baseline">
 											<h6 class="mb-0 me-2 ml-2 mr-2">
-												<a href="{{ route('profile', $review->user) }}">
+												<a href="{{ route('users.show', $review->user) }}">
 												{{ $comment->user->username }}
 												</a>          
 											</h6>

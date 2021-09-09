@@ -106,4 +106,5 @@ return [
     'comment' => 'Bình luận',
     'cancel' => 'Hủy',
     'edit' => 'Chỉnh sửa',
+    'back-home' => 'Về trang chủ',
 ];
