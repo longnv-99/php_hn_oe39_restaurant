@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Follow;
+use App\Models\Favorite;
 use App\Models\Like;
 use App\Models\User;
 use App\Models\Review;
@@ -15,11 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $users = User::orderBy('updated_at', 'DESC')
@@ -29,33 +25,6 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         /**get following and follower of user */
@@ -73,29 +42,6 @@ class UserController extends Controller
         return view('user.profile', compact('user', 'relationship'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     public function enable($id)
     {
         User::findOrFail($id)->update(['is_active' => config('app.is_active')]);
@@ -109,12 +55,7 @@ class UserController extends Controller
         
         return redirect()->route('users.index')->with('success', __('messages.disable-user-success'));
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         try {
@@ -157,6 +98,13 @@ class UserController extends Controller
             ->where('likeable_type', 'App\Models\Book')])
             ->get();
 
+        $likes = Like::where('user_id', Auth::user()->id)
+            ->where('likeable_type', 'App\Models\Book')
+            ->pluck('likeable_id')
+            ->toArray();
+
+        $favorites = Favorite::where('user_id', Auth::user()->id)->pluck('book_id')->toArray();
+
         $categoryParents = Category::all()->where('parent_id', '=', config('app.category_parent_id'));
         $categoryChildren = Category::all()->where('parent_id', '!=', config('app.category_parent_id'));
     
@@ -165,6 +113,6 @@ class UserController extends Controller
             'categoryChildren' => $categoryChildren,
         ]);
 
-        return view('user.index', compact('books', 'categoryParents', 'categoryChildren'));
+        return view('user.index', compact('books', 'likes', 'favorites', 'categoryParents', 'categoryChildren'));
     }
 }

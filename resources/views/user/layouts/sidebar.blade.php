@@ -21,7 +21,7 @@
                             @foreach ($categoryChildren as $cateChild)
                                 @if ($cateChild->parent_id == $cateParent->id)
                                     <li class="nav-item">
-                                        <a href="" class="nav-link cate-child" id="{{ $cateChild->id }}">
+                                        <a href="{{ route('books.search-category', $cateChild) }}" class="nav-link cate-child" id="{{ $cateChild->id }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>{{ $cateChild->name }}</p>
                                         </a>

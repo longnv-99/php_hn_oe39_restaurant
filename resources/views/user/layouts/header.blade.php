@@ -28,6 +28,12 @@
                 <a class="dropdown-item" href="{{ route('home') }}">
                     {{ __('messages.home') }}
                 </a>
+                <a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">
+                    {{ __('messages.my-profile') }}
+                </a>
+                <a class="dropdown-item" href="{{ route('favorites.index') }}">
+                    {{ __('messages.favorite-books') }}
+                </a>
                 <a class="dropdown-item" href="#" id="logout-btn">
                     {{ __('messages.logout') }}
                 </a>
