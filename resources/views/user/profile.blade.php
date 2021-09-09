@@ -18,9 +18,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
+                            <a href="{{ route('users.home') }}">{{ __('messages.back-home') }}</a>
+                        </div>
+                        <div class="col-sm-3">
                             <h1>{{ __('messages.profile') }}</h1>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="{{ route('users.show', Auth::user()) }}">{{ __('messages.my-profile') }}</a></li>
                             </ol>
@@ -122,6 +125,42 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>{{ __('messages.review-history') }}</h3>
+                                </div>
+                                <div class="card-body">
+                                    @if ($reviews->isEmpty())
+                                        <span>{{ __('messages.no-review') }}</span>
+                                    @else
+                                        <table class="table table-hover table-bordered">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="text-center">{{ __('messages.stt') }}</th>
+                                                    <th class="text-center">{{ __('messages.rate') }}</th>
+                                                    <th class="text-center">{{ __('messages.book-name') }}</th>
+                                                    <th class="text-center">{{ __('messages.content') }}</th>
+                                                    <th class="text-center">{{ __('messages.date') }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($reviews as $key => $review)
+                                                    <tr class="clickable-row" data-href="{{ route('books.detail', $review->book) }}">
+                                                        <td class="text-center" scope="row">{{ $reviews->firstItem() + $key }}</td>
+                                                        <td class="text-center">{{ $review->rate }}<span>&#11088;</span></td>
+                                                        <td class="text-center">{{ $review->book->title }}</td>
+                                                        <td>{{ $review->content }}</td>
+                                                        <td class="text-center">{{ formatOutputDate($review->updated_at) }}</td>
+                                                    <tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <div>
+                                            {{ $reviews->links() }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -134,4 +173,5 @@
     @translations
     <script src="{{ asset('js/profile.js') }}"></script>
 </body>
+
 </html>

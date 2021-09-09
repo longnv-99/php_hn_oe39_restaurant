@@ -106,4 +106,8 @@ return [
     'comment' => 'Bình luận',
     'cancel' => 'Hủy',
     'edit' => 'Chỉnh sửa',
+    'back-home' => 'Về trang chủ',
+    'delete_confirm' => 'Bạn có chắc chắn xóa',
+    'un-rate-review-success' => 'Hủy thích đánh giá thành công',
+    'rate-review-success' => 'Thích đánh giá thành công',
 ];

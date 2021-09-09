@@ -34,12 +34,19 @@ class UserController extends Controller
             ->withCount('followeds as number_of_followed')
             ->findOrFail($id);
 
+        $user->dob = formatOutputDate($user->dob);
+        
         $relationship = Follow::where('follower_id', Auth::id())
             ->where('followed_id', $id)
             ->whereNull('deleted_at')
             ->get();
 
-        return view('user.profile', compact('user', 'relationship'));
+        $reviews = Review::where('user_id', $id)
+            ->where('display', config('app.display'))
+            ->orderBy('updated_at', 'DESC')
+            ->paginate(config('app.paginate'));
+
+        return view('user.profile', compact('user', 'relationship', 'reviews'));
     }
 
     public function enable($id)
@@ -65,30 +72,6 @@ class UserController extends Controller
         } catch (Exception $ex) {
             return redirect()->route('users.index')->with('error', __('messages.delete-user-failed'));
         }
-    }
-
-    public function myProfile()
-    {
-        $reviewHistory = Review::where('user_id', '=', getAuthUserId())
-                        ->where('display', '=', config('app.display'))
-                        ->orderBy('updated_at', 'DESC')
-                        ->get();
-        $user = Auth::user();
-        $user->dob = formatOutputDate($user->dob);
-
-        return view('profile', compact(['reviewHistory','user']));
-    }
-
-    public function getUserProfile($id)
-    {
-        $reviewHistory = Review::where('user_id', '=', $id)
-                        ->where('display', '=', config('app.display'))
-                        ->orderBy('updated_at', 'DESC')
-                        ->get();
-        $user = User::where('is_active', '=', config('app.is_active'))->with('image')->findOrFail($id);
-        $user->dob = formatOutputDate($user->dob);
-        
-        return view('profile', compact(['reviewHistory','user']));
     }
     
     public function home()

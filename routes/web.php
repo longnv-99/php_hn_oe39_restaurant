@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('follows', FollowController::class)->only([
         'destroy', 'store'
     ]);
+
     Route::resource('likes', LikeController::class)->only([
         'store', 'destroy'
     ]);
@@ -61,8 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     ]);
 
     Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('profile', [UserController::class, 'myProfile'])->name('my-profile');
-    Route::get('profile/{id}', [UserController::class, 'getUserProfile'])->name('profile');
+    
     Route::get('reviews/rate/{review}', [ReviewController::class, 'rate'])->name('reviews.rate');
 });
 Route::get('book-detail/{id}', [BookController::class, 'getDetail'])->name('books.detail');

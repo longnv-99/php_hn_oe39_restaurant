@@ -120,9 +120,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $book = Book::findOrFail($id);
-        $book->delete();
-        $book->image->delete();
+        Book::findOrFail($id)->delete();
 
         return redirect()->route('books.index')->with('success', __('messages.delete-book-success'));
     }

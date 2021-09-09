@@ -106,4 +106,8 @@ return [
     'comment' => 'Comment',
     'cancel' => 'Cancel',
     'edit' => 'Edit',
+    'back-home' => 'Back to home',
+    'delete_confirm' => 'Are you sure you want to delete this?',
+    'un-rate-review-success' => 'Unrate review successful',
+    'rate-review-success' => 'Rate review successful',
 ];
