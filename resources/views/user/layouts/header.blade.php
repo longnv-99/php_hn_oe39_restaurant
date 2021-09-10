@@ -18,30 +18,39 @@
                 <i class="flag-icon flag-icon-vn mr-2"></i>{{ __('messages.vietnamese') }}
             </a>
         </li>
-        <li class="nav-item">
-            <p id="navbarDropdown" class="nav-item dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                <img src="{{ asset('uploads/users/' . Auth::user()->image->path) }}" id="user-img" class="img-circle elevation-2" alt="User Image">
-                {{ Auth::user()->username }}
-            </p>
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('home') }}">
-                    {{ __('messages.home') }}
+        @if (Auth::check())
+            <li class="nav-item">
+                <p id="navbarDropdown" class="nav-item dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <img src="{{ asset('uploads/users/' . Auth::user()->image->path) }}" id="user-img" class="img-circle elevation-2" alt="User Image">
+                    {{ Auth::user()->username }}
+                </p>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">
+                        {{ __('messages.my-profile') }}
+                    </a>
+                    <a class="dropdown-item" href="{{ route('favorites.index') }}">
+                        {{ __('messages.favorite-books') }}
+                    </a>
+                    <a class="dropdown-item" href="#" id="logout-btn">
+                        {{ __('messages.logout') }}
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </li>    
+        @else
+            <li class="nav-item">
+                <a class="dropdown-item" href="{{ route('login') }}">
+                    {{ __('messages.login') }}
                 </a>
-                <a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">
-                    {{ __('messages.my-profile') }}
+            </li>
+            <li class="nav-item">
+                <a class="dropdown-item" href="{{ route('register') }}">
+                    {{ __('messages.register') }}
                 </a>
-                <a class="dropdown-item" href="{{ route('favorites.index') }}">
-                    {{ __('messages.favorite-books') }}
-                </a>
-                <a class="dropdown-item" href="#" id="logout-btn">
-                    {{ __('messages.logout') }}
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </div>
+            </li>
+        @endif
         </li>
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">

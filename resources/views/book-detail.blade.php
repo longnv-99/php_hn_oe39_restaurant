@@ -3,23 +3,52 @@
 @section('content')
 <div class="container-xl">
     <div class="row">
-      	<div class="col-sm">
-            <img src="{{ asset('uploads/books/' . $book->image->path) }}" class="img-thumbnail">
-      	</div>
-      	<div class="col-sm">
-			<h1 class="my-3">{{ $book->title }}</h1>
-			<p>{{ __('messages.category') }} : {{ $book->category->name }}</p>
-			<p>{{ __('messages.author') }} : {{ $book->author }}</p>
-			<p>{{ __('messages.publish-date') }} : {{ formatOutputDate($book->published_date) }}</p>
-			<p>{{ __('messages.number-of-page') }} : {{ $book->number_of_page }}</p>
-			<hr>
-			<h3>{{ $avarageRating }} / {{ config('app.max-rating')}} <span>&#11088;</span></h3>
-			<hr>
-			<div class="mt-4">
-				<a href="#" class="btn btn-primary btn-lg" role="button">{{ count($book->likes) }} &#x1F44D;</a>
-				<a href="#" class="btn btn-danger btn-lg" role="button">&hearts; {{ __('messages.add-to-favorite') }}</a>
-        	</div>
-      	</div>
+        <div class="col-sm">
+            <img src="{{ asset('uploads/books/' . $book->image->path) }}" class="img-thumbnail" alt="">
+        </div>
+        <div class="col-sm">
+            <h1 class="my-3">{{ $book->title }}</h1>
+            <p>{{ __('messages.category') }} : {{ $book->category->name }}</p>
+            <p>{{ __('messages.author') }} : {{ $book->author }}</p>
+            <p>{{ __('messages.publish-date') }} : {{ formatOutputDate($book->published_date) }}</p>
+            <p>{{ __('messages.number-of-page') }} : {{ $book->number_of_page }}</p>
+            <hr>
+            <h3>{{ $avarageRating }} / {{ config('app.max-rating')}} <span>&#11088;</span></h3>
+            <hr>
+            @if (Auth::check())
+                <div class="book-action mt-4">
+                    @if (in_array($book->id, $likeBook_ids))
+                        <button class="btn btn-primary btn-unlike" id="{{ $book->id }}">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span id="total-like-{{ $book->id }}">{{ count($book->likes) }}</span>
+                        </button>
+                    @else
+                        <button class="btn btn-outline-primary btn-like" id="{{ $book->id }}">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span id="total-like-{{ $book->id }}">{{ count($book->likes) }}</span>
+                        </button>
+                    @endif
+                    @if (in_array($book->id, $favoriteBook_ids))
+                        <button class="btn btn-danger btn-unmark-favorite" id="{{ $book->id }}">
+                            <i class="fas fa-heart"></i>
+                            <span>{{ __('messages.favorite') }}</span>
+                        </button>
+                    @else
+                        <button class="btn btn-outline-danger btn-mark-favorite" id="{{ $book->id }}">
+                            <i class="fas fa-heart"></i>
+                            <span>{{ __('messages.favorite') }}</span>
+                        </button>
+                    @endif
+                </div>
+            @else
+                <div class="book-action mt-4">
+                    <button class="btn btn-outline-primary">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>{{ count($book->likes) }}</span>
+                    </button>
+                </div>
+            @endif
+        </div>
     </div>
     <hr>
     @if (Session::has('success'))
@@ -27,7 +56,7 @@
             {{ Session::get('success') }}
         </div>
     @endif
-	@if (Session::has('error'))
+    @if (Session::has('error'))
         <div class="alert alert-danger">
             {{ Session::get('error') }}
         </div>
@@ -37,23 +66,21 @@
         @csrf
         <div class="form-group">
             <label>{{ __('messages.rate') }}</label>
-            <div>
-				@for ($i = config('app.one-star'); $i <= config('app.max-rating'); $i++)
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="rate" id="inlineRadio1" value={{ $i }}>
-						<label class="form-check-label" for="inlineRadio1">
-							@for ($a = config('app.one-star'); $a <= $i; $a++)
-								<span>&#11088;</span>
-							@endfor	
-						</label>
-					</div>
-				@endfor
-            </div>
+            @for ($i = config('app.one-star'); $i <= config('app.max-rating'); $i++)
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rate" id="inlineRadio1" value={{ $i }}>
+                    <label class="form-check-label" for="inlineRadio1">
+                        @for ($a = config('app.one-star'); $a <= $i; $a++)
+                            <span>&#11088;</span>
+                        @endfor
+                    </label>
+                </div>
+            @endfor
             <textarea class="form-control" placeholder="{{ __('messages.leave-a-review') }}" name="content" rows="4">
             </textarea>
             <input type="hidden" name="book_id" value={{ $book->id }}>
             <input type="hidden" name="user_id" value={{ Auth::check() ? getAuthUserId() : NULL }}>
-        	<button type="submit" class="btn btn-primary mt-2 float-right">{{ __('messages.review') }}</button>
+            <button type="submit" class="btn btn-primary mt-2 float-right">{{ __('messages.review') }}</button>
         </div>
     </form>
     <div class="d-flex align-items-center justify-content-center mt-5">
@@ -216,4 +243,7 @@
 		</div>
     </div>
 </div>
+@endsection
+@section('js')
+<script src="{{ asset('js/like_and_favorite.js') }}"></script>
 @endsection

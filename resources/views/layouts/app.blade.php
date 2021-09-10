@@ -20,6 +20,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/dist/css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/plugins/fontawesome-free/css/all.min.css') }}">
 </head>
 <body>
     <div id="app">
@@ -28,68 +29,12 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('messages.register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->username }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @if (auth()->user()->role_id == config('app.admin_role_id'))
-                                        <a class="dropdown-item" href="{{ route('admin.home') }}">
-                                            {{ __('messages.admin-page') }}
-                                        </a>
-                                    @endif
-                                    <a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">
-                                        {{ __('messages.profile') }}
-                                    </a>
-                                    @if (auth()->user()->role_id == config('app.user_role_id'))
-                                        <a class="dropdown-item" href="{{ route('users.home') }}">
-                                            {{ __('messages.user-page') }}
-                                        </a>
-                                    @endif
-                                    <a class="dropdown-item" href="#" id="logout-btn">
-                                        {{ __('messages.logout') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>                                
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('bower_components/adminLTE/plugins/jquery/jquery.min.js') }}"></script>
+    @yield('js')
 </body>
 </html>
