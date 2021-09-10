@@ -97,7 +97,7 @@
 											{{ __('messages.edit') }}
 										</a>
 										<form action="{{ route('reviews.destroy', $review->id) }}" method="post"
-											onsubmit="return confirm(' {{ __('delete_confirm') }} ')">
+											class="delete-form" data-message="{{ __('messages.delete_confirm') }}">
 											@csrf
 											@method('DELETE')
 											<button type="submit" class="btn btn-danger rounded-1">
@@ -178,7 +178,7 @@
 													{{ __('messages.edit') }}
 												</a>
 												<form action="{{ route('comments.destroy', $comment) }}" method="post"
-													onsubmit="return confirm(' {{ __('delete_confirm') }} ')">
+													class="delete-form" data-message="{{ __('messages.delete_confirm') }}">
 													@csrf
 													@method('DELETE')
 													<button type="submit" class="btn btn-danger rounded-1">

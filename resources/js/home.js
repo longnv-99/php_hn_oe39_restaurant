@@ -16,3 +16,9 @@ $(document).on('click', '#logout-btn', function () {
     document.getElementById('logout-form').submit();
 });
 
+$("form.delete-form").submit(function (e) {
+  var $message = $(this).data('message');
+  if(!confirm($message)){
+    e.preventDefault();
+  }
+});

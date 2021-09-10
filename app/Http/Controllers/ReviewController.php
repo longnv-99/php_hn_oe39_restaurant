@@ -138,7 +138,13 @@ class ReviewController extends Controller
                 ->where('likeable_id', '=', $id)
                 ->get();
         if (count($like)) {
-            return redirect()->back()->with('error', __('messages.already-rate-this-review'));
+            Like::withTrashed()
+                ->where('user_id', getAuthUserId())
+                ->where('likeable_id', $id)
+                ->where('likeable_type', get_class($review))
+                ->forceDelete();
+
+            return redirect()->back()->with('success', __('messages.un-rate-review-success'));
         } else {
             Like::create([
                 'user_id' => getAuthUserId(),
