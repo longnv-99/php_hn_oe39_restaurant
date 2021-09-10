@@ -8,6 +8,7 @@ use App\Http\Requests\CreateReviewRequest;
 use App\Http\Requests\EditReviewRequest;
 use App\Models\Comment;
 use App\Models\Like;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -39,16 +40,10 @@ class ReviewController extends Controller
      */
     public function store(CreateReviewRequest $request)
     {
-        $review = Review::where('user_id', '=', getAuthUserId())
-                ->where('book_id', '=', $request->book_id)
-                ->get();
-        if (count($review)) {
-            return redirect()->back()->with('error', __('messages.already-review-book'));
-        } else {
-            $data = $request->all();
-            $data['display'] = config('app.display');
-            Review::create($data);
-        }
+        $data = $request->all();
+        $data['display'] = config('app.display');
+        $data['user_id'] = Auth::id();
+        Review::create($data);
 
         return redirect()->back()->with('success', __('messages.create-review-success'));
     }
@@ -82,15 +77,12 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(EditReviewRequest $request, $id)
+    public function update(EditReviewRequest $request, Review $review)
     {
-        $review = Review::findOrFail($id);
-        $user_id = $review->user_id;
-        if (checkValidUser($user_id)) {
-            $review->update($request->all());
-        } else {
-            redirect()->back()->with('error', __('messages.unauthorize'));
-        }
+        $this->authorize('update', $review);
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+        $review->update($data);
 
         return redirect()->back()->with('success', __('messages.edit-review-success'));
     }
@@ -101,15 +93,10 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Review $review)
     {
-        $review = Review::findOrFail($id);
-        $user_id = $review->user_id;
-        if (checkValidUser($user_id)) {
-            $review->delete();
-        } else {
-            redirect()->back()->with('error', __('messages.unauthorize'));
-        }
+        $this->authorize('delete', $review);
+        $review->delete();
 
         return redirect()->back()->with('success', __('messages.delete-review-success'));
     }

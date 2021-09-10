@@ -6,6 +6,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\EditCommentRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -39,6 +40,7 @@ class CommentController extends Controller
     {
         $data = $request->all();
         $data['display'] = config('app.display');
+        $data['user_id'] = Auth::id();
         Comment::create($data);
 
         return redirect()->back()->with('success', __('messages.create-comment-success'));
@@ -73,15 +75,12 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(EditCommentRequest $request, $id)
+    public function update(EditCommentRequest $request, Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
-        $user_id = $comment->user_id;
-        if (checkValidUser($user_id)) {
-            $comment->update($request->all());
-        } else {
-            redirect()->back()->with('error', __('messages.unauthorize'));
-        }
+        $this->authorize('update', $comment);
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+        $comment->update($data);
 
         return redirect()->back()->with('success', __('messages.edit-comment-success'));
     }
@@ -92,15 +91,10 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
-        $user_id = $comment->user_id;
-        if (checkValidUser($user_id)) {
-            $comment->delete();
-        } else {
-            redirect()->back()->with('error', __('messages.unauthorize'));
-        }
+        $this->authorize('delete', $comment);
+        $comment->delete();
 
         return redirect()->back()->with('success', __('messages.delete-comment-success'));
     }
