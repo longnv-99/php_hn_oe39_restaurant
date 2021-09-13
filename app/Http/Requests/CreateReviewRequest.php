@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CreateReviewRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class CreateReviewRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -26,7 +27,6 @@ class CreateReviewRequest extends FormRequest
         return [
             'content' => 'string|required|max:500',
             'book_id' => 'integer|required',
-            'user_id' => 'integer|required',
             'rate' => 'integer|required',
         ];
     }

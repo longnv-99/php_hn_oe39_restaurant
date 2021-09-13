@@ -105,4 +105,8 @@ return [
     'delete_confirm' => 'Are you sure you want to delete this?',
     'un-rate-review-success' => 'Unrate review successful',
     'rate-review-success' => 'Rate review successful',
+    'deny-update-review' => 'You do not have right to update this review',
+    'deny-delete-review' => 'You do not have right to delete this review',
+    'deny-update-comment' => 'You do not have right to update this comment',
+    'deny-delete-comment' => 'You do not have right to delete this comment',
 ];

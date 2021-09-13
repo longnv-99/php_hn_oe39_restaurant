@@ -105,4 +105,8 @@ return [
     'delete_confirm' => 'Bạn có chắc chắn xóa',
     'un-rate-review-success' => 'Hủy thích đánh giá thành công',
     'rate-review-success' => 'Thích đánh giá thành công',
+    'deny-update-review' => 'Bạn không có quyền sửa review này',
+    'deny-delete-review' => 'Bạn không có quyền xóa review này',
+    'deny-update-comment' => 'Bạn không có quyền sửa comment này',
+    'deny-delete-comment' => 'Bạn không có quyền xóa comment này',
 ];

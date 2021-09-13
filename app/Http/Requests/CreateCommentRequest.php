@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CreateCommentRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class CreateCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -26,7 +27,6 @@ class CreateCommentRequest extends FormRequest
         return [
             'content' => 'string|required|max:500',
             'review_id' => 'integer|required',
-            'user_id' => 'integer|required',
         ];
     }
 }
