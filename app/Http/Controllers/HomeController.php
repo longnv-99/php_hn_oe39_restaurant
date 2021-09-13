@@ -42,7 +42,7 @@ class HomeController extends Controller
             ])->get();
 
         $categoryParents = Category::all()->where('parent_id', '=', config('app.category_parent_id'));
-        $categoryChildren = Category::all()->where('parent_id', '!=', config('app.category_parent_id'));
+        $categoryChildren = Category::with('books')->where('parent_id', '!=', config('app.category_parent_id'))->get();
 
         session([
             'categoryParents' => $categoryParents,

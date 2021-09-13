@@ -1,21 +1,6 @@
 @extends('user.layouts.layout')
 
-@section('title', __('messages.list-book'))
 @section('main')
-<form class="form-inline" action="{{ route('books.search-title') }}">
-    <div class="form-group">
-        @if (isset($title))
-            <input type="text" name="title" value="{{ $title }}" id="" class="form-control" placeholder="{{ __('messages.enter-title') }}">
-        @else
-            <input type="text" name="title" id="" class="form-control" placeholder="{{ __('messages.enter-title') }}">
-        @endif
-    </div>
-    <button type="submit" class="btn btn-primary" id="btn-search">
-        <i class="fas fa-search"></i>
-    </button>
-</form>
-<hr>
-<div class="row" id="all-book">
 @foreach ($books as $book)
     <div class="col-book col-12 col-md-3">
         <div class="card-book card-info border-secondary">
@@ -76,10 +61,4 @@
         </div>
     </div>
 @endforeach
-</div>
-@endsection
-@section('js')
-
-<script src="{{ asset('js/like_and_favorite.js') }}"></script>
-
 @endsection
