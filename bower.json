@@ -16,6 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "adminLTE": "git@github.com:truongcr7/adminLTE.git"
+    "adminLTE": "https://github.com/truongcr7/adminLTE.git"
   }
 }

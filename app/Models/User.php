@@ -95,10 +95,6 @@ class User extends Authenticatable
         static::deleting(function ($user) {
             $user->image()->delete();
 
-            foreach ($user->comments()->get() as $comment) {
-                $comment->delete();
-            }
-
             foreach ($user->reviews()->get() as $review) {
                 $review->delete();
             }
@@ -109,6 +105,14 @@ class User extends Authenticatable
 
             foreach ($user->favorites()->get() as $favorite) {
                 $favorite->delete();
+            }
+
+            foreach ($user->followers()->get() as $follower) {
+                $follower->delete();
+            }
+
+            foreach ($user->followeds()->get() as $followed) {
+                $followed->delete();
             }
         });
     }

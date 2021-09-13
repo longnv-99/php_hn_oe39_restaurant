@@ -109,4 +109,5 @@ return [
     'deny-delete-review' => 'Bạn không có quyền xóa review này',
     'deny-update-comment' => 'Bạn không có quyền sửa comment này',
     'deny-delete-comment' => 'Bạn không có quyền xóa comment này',
+    'book-reviewing-system' => 'Hệ Thống Đánh Giá Sách',
 ];

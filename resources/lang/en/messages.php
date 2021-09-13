@@ -109,4 +109,5 @@ return [
     'deny-delete-review' => 'You do not have right to delete this review',
     'deny-update-comment' => 'You do not have right to update this comment',
     'deny-delete-comment' => 'You do not have right to delete this comment',
+    'book-reviewing-system' => 'Book Reviewing System',
 ];

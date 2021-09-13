@@ -1,10 +1,10 @@
 @extends('user.layouts.layout')
 
-@section('title', __('messages.list-book'))
-@section('main')
+@section('title')
 <h2>{{ __('messages.favorite-books') }}</h2>
-<hr>
-<div class="row" id="all-book">
+@endsection
+
+@section('main')
 @foreach ($books as $book)
     <div class="col-book col-12 col-md-3">
         <div class="card-book card-info border-secondary">
@@ -44,10 +44,4 @@
         </div>
     </div>
 @endforeach
-</div>
-@endsection
-@section('js')
-
-<script src="{{ asset('js/like_and_favorite.js') }}"></script>
-
 @endsection

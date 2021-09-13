@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Book Reviewing Admin</title>
+    <title>{{ __('messages.book-reviewing-system') }}</title>
 
     <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/adminLTE/plugins/flag-icon-css/css/flag-icon.min.css') }}">
