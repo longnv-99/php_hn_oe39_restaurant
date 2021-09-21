@@ -2,34 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
-use App\Models\Like;
+use App\Repositories\Like\LikeRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
+    protected $likeRepository;
+
+    public function __construct(LikeRepositoryInterface $likeRepository)
+    {
+        $this->likeRepository = $likeRepository;
+    }
+
     public function store(Request $request)
     {
         $book_id = $request->book_id;
-        $book = Book::findOrFail($book_id);
-        Like::create([
+
+        $data = [
             'user_id' => Auth::id(),
             'likeable_id' => $book_id,
-            'likeable_type' => get_class($book),
-        ]);
+            'likeable_type' => 'App\Models\Book',
+        ];
+        $this->likeRepository->create($data);
 
         return json_encode(['statusCode' => 200]);
     }
 
     public function destroy($book_id)
     {
-        $book = Book::findOrFail($book_id);
-        Like::withTrashed()
-            ->where('user_id', Auth::id())
-            ->where('likeable_id', $book_id)
-            ->where('likeable_type', get_class($book))
-            ->forceDelete();
+        $this->likeRepository->dislikeBook($book_id, Auth::id());
 
         return json_encode(['statusCode' => 200]);
     }
