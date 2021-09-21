@@ -14,6 +14,8 @@ use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Comment\CommentRepository;
+use App\Repositories\Comment\CommentRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +45,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             ReviewRepositoryInterface::class,
             ReviewRepository::class
+        );
+        $this->app->singleton(BookRepositoryInterface::class, BookRepository::class);
+        $this->app->singleton(LikeRepositoryInterface::class, LikeRepository::class);
+        $this->app->singleton(
+            CommentRepositoryInterface::class,
+            CommentRepository::class,
         );
     }
 
