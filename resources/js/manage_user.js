@@ -8,14 +8,27 @@ $('.btn-delete').click(function (ev) {
     }
 });
 
-var is_active = document.getElementsByClassName('is_active'),
-    btn_enable = document.getElementsByClassName('btn-enable'),
-    btn_disable = document.getElementsByClassName('btn-disable');
+var is_active = document.getElementsByClassName('is-active'),
+    btn_change_user_status = document.getElementsByClassName('btn-change-user-status');
 
 for (var i = 0; i < is_active.length; i++) {
     if (is_active[i].innerText == 1) {
-        btn_enable[i].style.display = 'none';
+        if (btn_change_user_status[i].classList.contains('btn-success')) {
+            btn_change_user_status[i].classList.remove('btn-success');
+        }
+        btn_change_user_status[i].classList.add('btn-secondary');
     } else {
-        btn_disable[i].style.display = 'none';
+        if (btn_change_user_status[i].classList.contains('btn-secondary')) {
+            btn_change_user_status[i].classList.remove('btn-secondary');
+        }
+        btn_change_user_status[i].classList.add('btn-success');
     }
 }
+
+$('.btn-change-user-status').click(function (ev) {
+    ev.preventDefault();
+    var _href = $(this).attr('href');
+
+    $('form#form-update').attr('action', _href);
+        $('form#form-update').submit(); console.log('hihi');
+});

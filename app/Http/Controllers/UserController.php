@@ -2,69 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Follow;
-use App\Models\User;
-use App\Models\Review;
-use Exception;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\Follow\FollowRepositoryInterface;
+use App\Repositories\Review\ReviewRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    protected $userRepo;
+    protected $followRepo;
+    protected $reviewRepo;
+
+    public function __construct(
+        UserRepositoryInterface $userRepo,
+        FollowRepositoryInterface $followRepo,
+        ReviewRepositoryInterface $reviewRepo
+    ) {
+        $this->userRepo = $userRepo;
+        $this->followRepo = $followRepo;
+        $this->reviewRepo = $reviewRepo;
+    }
+
     public function index()
     {
-        $users = User::orderBy('updated_at', 'DESC')
-            ->where('role_id', config('app.user_role_id'))
-            ->paginate(config('app.paginate'));
+        $users = $this->userRepo->getUsersIsNotAdmin();
 
         return view('admin.users.index', compact('users'));
     }
 
     public function show($id)
     {
-        /**get following and follower of user */
-        $user = User::with(['followers.followed.image'])
-            ->withCount('followers as number_of_follower')
-            ->with(['followeds.follower.image'])
-            ->withCount('followeds as number_of_followed')
-            ->findOrFail($id);
-
-        $user->dob = formatOutputDate($user->dob);
-        
-        $relationship = Follow::where('follower_id', Auth::id())
-            ->where('followed_id', $id)
-            ->whereNull('deleted_at')
-            ->get();
-
-        $reviews = Review::where('user_id', $id)
-            ->where('display', config('app.display'))
-            ->orderBy('updated_at', 'DESC')
-            ->paginate(config('app.paginate'));
+        $user = $this->userRepo->showUserProfile($id);
+        $relationship = $this->followRepo->getRelationship($id);
+        $reviews = $this->reviewRepo->getReviewsHistory($id);
 
         return view('user.profile', compact('user', 'relationship', 'reviews'));
     }
 
-    public function enable($id)
+    public function changeUserStatus($id, $status)
     {
-        User::findOrFail($id)->update(['is_active' => config('app.is_active')]);
-        
-        return redirect()->route('users.index')->with('success', __('messages.enable-user-success'));
-    }
-
-    public function disable($id)
-    {
-        User::findOrFail($id)->update(['is_active' => config('app.is_inactive')]);
-        
-        return redirect()->route('users.index')->with('success', __('messages.disable-user-success'));
+        $this->userRepo->changeUserStatus($id, $status);
+        if ($status == config('app.is_active')) {
+            return redirect()->route('users.index')->with('success', __('messages.disable-user-success'));
+        } else {
+            return redirect()->route('users.index')->with('success', __('messages.enable-user-success'));
+        }
     }
     
     public function destroy($id)
     {
-        try {
-            User::findOrFail($id)->delete();
+        $this->userRepo->delete($id);
 
-            return redirect()->route('users.index')->with('success', __('messages.delete-user-success'));
-        } catch (Exception $ex) {
-            return redirect()->route('users.index')->with('error', __('messages.delete-user-failed'));
-        }
+        return redirect()->route('users.index')->with('success', __('messages.delete-user-success'));
     }
 }

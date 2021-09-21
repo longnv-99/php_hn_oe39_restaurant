@@ -29,8 +29,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-    Route::get('users/enable/{user}', [UserController::class, 'enable'])->name('users.enable');
-    Route::get('users/disable/{user}', [UserController::class, 'disable'])->name('users.disable');
+    Route::put('users/changeUserStatus/{user}/{status}', [UserController::class, 'changeUserStatus'])
+        ->name('users.changeUserStatus');
     Route::get('reviews/hide/{review}', [ReviewController::class, 'hide'])->name('reviews.hide');
     Route::get('reviews/view/{review}', [ReviewController::class, 'view'])->name('reviews.view');
     Route::get('comments/hide/{comment}', [CommentController::class, 'hide'])->name('comments.hide');

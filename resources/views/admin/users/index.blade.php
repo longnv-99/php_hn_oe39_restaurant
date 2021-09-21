@@ -31,13 +31,14 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->fullname }}</td>
                 <td>{{ $user->dob }}</td>
-                <td class="is_active">{{ $user->is_active }}</td>
+                <td class="is-active">{{ $user->is_active }}</td>
                 <td class="text-center">
-                    <a href="{{ route('users.enable', $user) }}" class="btn btn-sm btn-success btn-enable">
-                        {{ __('messages.enable') }}
-                    </a>
-                    <a href="{{ route('users.disable', $user) }}" class="btn btn-sm btn-secondary btn-disable">
-                        {{ __('messages.disable') }}
+                    <a href="{{ route('users.changeUserStatus', [$user, $user->is_active]) }}" class="btn btn-sm btn-change-user-status" id="{{ $user->id }}_{{ $user->is_active }}">
+                        @if ($user->is_active == config('app.is_active'))
+                            {{ __('messages.disable') }}
+                        @else
+                            {{ __('messages.enable') }}
+                        @endif
                     </a>
                     <a href="{{ route('users.destroy', $user) }}" class="btn btn-sm btn-danger btn-delete">
                         {{ __('messages.delete') }}
@@ -51,6 +52,10 @@
 <div>
     {{ $users->links() }}
 </div>
+<form method="POST" id="form-update">
+    @csrf
+    @method('PUT')
+</form>
 <form method="POST" id="form-delete">
     @csrf
     @method('DELETE')
