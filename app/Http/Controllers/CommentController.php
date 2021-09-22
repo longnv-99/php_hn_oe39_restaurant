@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Comment\CommentRepositoryInterface;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateCommentRequest;
@@ -10,24 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    protected $commentRepo;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function __construct(CommentRepositoryInterface $commentRepo)
     {
-        //
+        $this->commentRepo = $commentRepo;
     }
 
     /**
@@ -41,31 +29,9 @@ class CommentController extends Controller
         $data = $request->all();
         $data['display'] = config('app.display');
         $data['user_id'] = Auth::id();
-        Comment::create($data);
+        $this->commentRepo->create($data);
 
         return redirect()->back()->with('success', __('messages.create-comment-success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
     }
 
     /**
@@ -78,9 +44,7 @@ class CommentController extends Controller
     public function update(EditCommentRequest $request, Comment $comment)
     {
         $this->authorize('update', $comment);
-        $data = $request->all();
-        $data['user_id'] = Auth::id();
-        $comment->update($data);
+        $this->commentRepo->update($comment->id, $request->all());
 
         return redirect()->back()->with('success', __('messages.edit-comment-success'));
     }
@@ -94,21 +58,23 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $this->authorize('delete', $comment);
-        $comment->delete();
+        $this->commentRepo->delete($comment->id);
 
         return redirect()->back()->with('success', __('messages.delete-comment-success'));
     }
 
     public function hide($id)
     {
-        Comment::findOrFail($id)->update(['display' => config('app.non-display')]);
+        $this->commentRepo->find($id);
+        $this->commentRepo->hideComment($id);
 
         return response()->json(['success' => __('messages.hide-comment-success')]);
     }
 
     public function view($id)
     {
-        Comment::findOrFail($id)->update(['display' => config('app.display')]);
+        $this->commentRepo->find($id);
+        $this->commentRepo->showComment($id);
 
         return response()->json(['success' => __('messages.show-comment-success')]);
     }
