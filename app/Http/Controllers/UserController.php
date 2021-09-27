@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Follow\FollowRepositoryInterface;
 use App\Repositories\Review\ReviewRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -32,8 +33,8 @@ class UserController extends Controller
     public function show($id)
     {
         $user = $this->userRepo->showUserProfile($id);
-        $relationship = $this->followRepo->getRelationship($id);
-        $reviews = $this->reviewRepo->getReviewsHistory($id);
+        $relationship = $this->followRepo->getRelationship(Auth::id(), $id);
+        $reviews = $this->reviewRepo->getReviewsHistoryByUserId($id);
 
         return view('user.profile', compact('user', 'relationship', 'reviews'));
     }

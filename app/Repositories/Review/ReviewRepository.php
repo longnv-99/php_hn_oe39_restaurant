@@ -12,12 +12,30 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
         return Review::class;
     }
 
-    public function getReviewsHistory($id)
+    public function getReviewsHistoryByUserId($user_id)
     {
         return $this->model
-            ->where('user_id', $id)
+            ->where('user_id', $user_id)
             ->where('display', config('app.display'))
             ->orderBy('updated_at', 'DESC')
             ->paginate(config('app.paginate'));
+    }
+
+    public function getReviewsWithUsersAndCommentsAndLikesByBookId($book_id)
+    {
+        return $this->model->with('user', 'comments', 'likes')
+            ->where('book_id', $book_id)
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+    }
+
+    public function hideReviewById($id)
+    {
+        return $this->update($id, ['display' => config('app.non-display')]);
+    }
+
+    public function showReviewById($id)
+    {
+        return $this->update($id, ['display' => config('app.display')]);
     }
 }

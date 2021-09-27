@@ -59,9 +59,9 @@ class LikeControllerTest extends TestCase
         $user = User::factory()->make(['id' => 1]);
         $this->be($user);
         $this->likeRepoMock
-            ->shouldReceive('dislikeBook')
+            ->shouldReceive('dislikeBookOrReview')
             ->once()
-            ->with($book->id, $user->id);
+            ->with($book->id, get_class($book), $user->id);
         
         $response = $this->likeController->destroy($book->id);
         $this->assertJson($response);

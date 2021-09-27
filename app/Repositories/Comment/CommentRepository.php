@@ -12,17 +12,29 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
         return Comment::class;
     }
 
-    public function hideComment($id)
+    public function hideCommentById($id)
     {
         return $this->update($id, [
             'display' => config('app.non-display'),
         ]);
     }
 
-    public function showComment($id)
+    public function showCommentById($id)
     {
         return $this->update($id, [
             'display' => config('app.display'),
         ]);
+    }
+
+    public function hideCommentsByReviewId($review_id)
+    {
+        return $this->model->where('review_id', $review_id)
+            ->update(['display' => config('app.non-display')]);
+    }
+
+    public function showCommentsByReviewId($review_id)
+    {
+        return $this->model->where('review_id', $review_id)
+            ->update(['display' => config('app.display')]);
     }
 }

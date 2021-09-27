@@ -11,10 +11,6 @@ use App\Http\Controllers\CommentController;
 use App\Repositories\Comment\CommentRepository;
 use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\EditCommentRequest;
-use Illuminate\Http\Request;
-use Illuminate\Database\Connection;
-use Faker\Factory as Faker;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -150,11 +146,7 @@ class CommentControllerTest extends TestCase
 
         // Mock
         $this->commentRepoMock
-            ->shouldReceive('hideComment')
-            ->once()
-            ->with($comment->id);
-        $this->commentRepoMock
-            ->shouldReceive('find')
+            ->shouldReceive('hideCommentById')
             ->once()
             ->with($comment->id);
 
@@ -172,7 +164,7 @@ class CommentControllerTest extends TestCase
 
         // Set up mock
         $this->commentRepoMock
-            ->shouldReceive('find')
+            ->shouldReceive('hideCommentById')
             ->once()
             ->with($unexistedCommentId)
             ->andThrow(ModelNotFoundException::class);
@@ -195,11 +187,7 @@ class CommentControllerTest extends TestCase
 
         // Mock
         $this->commentRepoMock
-            ->shouldReceive('showComment')
-            ->once()
-            ->with($comment->id);
-        $this->commentRepoMock
-            ->shouldReceive('find')
+            ->shouldReceive('showCommentById')
             ->once()
             ->with($comment->id);
 
@@ -217,7 +205,7 @@ class CommentControllerTest extends TestCase
 
         // Set up mock
         $this->commentRepoMock
-            ->shouldReceive('find')
+            ->shouldReceive('showCommentById')
             ->once()
             ->with($unexistedCommentId)
             ->andThrow(ModelNotFoundException::class);

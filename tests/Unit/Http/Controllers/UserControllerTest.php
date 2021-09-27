@@ -85,11 +85,11 @@ class UserControllerTest extends TestCase
         $this->followRepoMock
             ->shouldReceive('getRelationship')
             ->once()
-            ->with($user->id)
+            ->with(Auth::id(), $user->id)
             ->andReturn($relationship);
 
         $this->reviewRepoMock
-            ->shouldReceive('getReviewsHistory')
+            ->shouldReceive('getReviewsHistoryByUserId')
             ->once()
             ->with($user->id)
             ->andReturn($reviews);
