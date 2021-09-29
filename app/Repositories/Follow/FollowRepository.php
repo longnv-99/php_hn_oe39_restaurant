@@ -13,11 +13,34 @@ class FollowRepository extends BaseRepository implements FollowRepositoryInterfa
         return Follow::class;
     }
 
-    public function getRelationship($id)
+    public function prepareGetRelationship($follower_id, $followed_id)
     {
         return $this->model
-            ->where('follower_id', Auth::id())
-            ->where('followed_id', $id)
+            ->where('follower_id', $follower_id)
+            ->where('followed_id', $followed_id);
+    }
+    public function getRelationship($follower_id, $followed_id)
+    {
+        return $this->prepareGetRelationship($follower_id, $followed_id)->get();
+    }
+
+    public function getRelationshipWithTrashed($follower_id, $followed_id)
+    {
+        return $this->prepareGetRelationship($follower_id, $followed_id)
+            ->withTrashed()
             ->get();
+    }
+
+    public function restoreRelationship($follower_id, $followed_id)
+    {
+        return $this->prepareGetRelationship($follower_id, $followed_id)
+            ->withTrashed()
+            ->restore();
+    }
+
+    public function deleteRelationship($follower_id, $followed_id)
+    {
+        return $this->prepareGetRelationship($follower_id, $followed_id)
+            ->delete();
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Repositories\Comment\CommentRepositoryInterface;
 use App\Models\Comment;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\EditCommentRequest;
 use Illuminate\Support\Facades\Auth;
@@ -65,16 +64,14 @@ class CommentController extends Controller
 
     public function hide($id)
     {
-        $this->commentRepo->find($id);
-        $this->commentRepo->hideComment($id);
+        $this->commentRepo->hideCommentById($id);
 
         return response()->json(['success' => __('messages.hide-comment-success')]);
     }
 
     public function view($id)
     {
-        $this->commentRepo->find($id);
-        $this->commentRepo->showComment($id);
+        $this->commentRepo->showCommentById($id);
 
         return response()->json(['success' => __('messages.show-comment-success')]);
     }

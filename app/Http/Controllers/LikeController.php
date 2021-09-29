@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
-    protected $likeRepository;
+    protected $likeRepo;
 
-    public function __construct(LikeRepositoryInterface $likeRepository)
+    public function __construct(LikeRepositoryInterface $likeRepo)
     {
-        $this->likeRepository = $likeRepository;
+        $this->likeRepo = $likeRepo;
     }
 
     public function store(Request $request)
@@ -24,14 +24,14 @@ class LikeController extends Controller
             'likeable_id' => $book_id,
             'likeable_type' => 'App\Models\Book',
         ];
-        $this->likeRepository->create($data);
+        $this->likeRepo->create($data);
 
         return json_encode(['statusCode' => 200]);
     }
 
     public function destroy($book_id)
     {
-        $this->likeRepository->dislikeBook($book_id, Auth::id());
+        $this->likeRepo->dislikeBookOrReview($book_id, 'App\Models\Book', Auth::id());
 
         return json_encode(['statusCode' => 200]);
     }
