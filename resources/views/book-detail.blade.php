@@ -18,7 +18,7 @@
             <hr>
             @if (Auth::check())
                 <div class="book-action mt-4">
-                    @if (in_array($book->id, $likeBook_ids))
+                    @if ($likedBook)
                         <button class="btn btn-primary btn-unlike" id="{{ $book->id }}">
                             <i class="fas fa-thumbs-up"></i>
                             <span id="total-like-{{ $book->id }}">{{ count($book->likes) }}</span>
@@ -29,7 +29,7 @@
                             <span id="total-like-{{ $book->id }}">{{ count($book->likes) }}</span>
                         </button>
                     @endif
-                    @if (in_array($book->id, $favoriteBook_ids))
+                    @if ($favoritedBook)
                         <button class="btn btn-danger btn-unmark-favorite" id="{{ $book->id }}">
                             <i class="fas fa-heart"></i>
                             <span>{{ __('messages.favorite') }}</span>
@@ -107,7 +107,7 @@
 		<div class="container">
 			<div class="row justify-content-center ">
 				<div class="col-lg-12 mb-2">
-					<h1>{{ count($reviews) }} {{ __('messages.review') }}</h1>
+					<h1>{{ $totalReviewDisplay }} {{ __('messages.review') }}</h1>
 				</div>
 			</div>
 			<div class="row justify-content-center mb-4">
