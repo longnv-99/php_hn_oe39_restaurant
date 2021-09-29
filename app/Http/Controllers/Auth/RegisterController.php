@@ -4,17 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
-use App\Models\Image;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 use App\Http\Requests\RegisterUserRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Auth\Authenticatable;
-use DB;
+use App\Repositories\Image\ImageRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class RegisterController extends Controller
 {
@@ -37,15 +31,21 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    protected $userRepo;
+    protected $imageRepo;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepo,
+        ImageRepositoryInterface $imageRepo
+    ) {
         $this->middleware('guest');
+        $this->userRepo = $userRepo;
+        $this->imageRepo = $imageRepo;
     }
 
     /**
@@ -56,7 +56,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        $user = $this->userRepo->create([
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -66,7 +66,7 @@ class RegisterController extends Controller
             'dob' => $data['dob'],
         ]);
 
-        Image::create([
+        $this->imageRepo->create([
             'path' => config('app.default_avatar_path'),
             'imageable_type' => get_class($user),
             'imageable_id' => $user->id,
@@ -75,7 +75,7 @@ class RegisterController extends Controller
 
     public function register(RegisterUserRequest $request)
     {
-        $user = $this->create($request->all());
+        $this->create($request->all());
 
         return redirect('login')->with('message', __('messages.register_success'));
     }

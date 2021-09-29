@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Follow;
+use App\Repositories\Follow\FollowRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FollowController extends Controller
 {
+    protected $followRepo;
+
+    public function __construct(FollowRepositoryInterface $followRepo)
+    {
+        $this->followRepo = $followRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,20 +42,15 @@ class FollowController extends Controller
      */
     public function store(Request $request)
     {
-        $relationship = Follow::withTrashed()
-            ->where('follower_id', Auth::id())
-            ->where('followed_id', $request->id)
-            ->get();
+        $relationship = $this->followRepo
+            ->getRelationshipWithTrashed(Auth::id(), $request->id);
         if ($relationship->isEmpty()) {
-            Follow::create([
+            $this->followRepo->create([
                 'follower_id' => Auth::id(),
                 'followed_id' => $request->id,
             ]);
         } else {
-            Follow::withTrashed()
-                ->where('follower_id', Auth::id())
-                ->where('followed_id', $request->id)
-                ->restore();
+            $this->followRepo->restoreRelationship(Auth::id(), $request->id);
         }
 
         return json_encode(['statusCode' => 200]);
@@ -97,9 +98,7 @@ class FollowController extends Controller
      */
     public function destroy($id)
     {
-        Follow::where('followed_id', $id)
-            ->where('follower_id', Auth::id())
-            ->delete();
+        $this->followRepo->deleteRelationship(Auth::id(), $id);
 
         return json_encode(['statusCode' => 200]);
     }

@@ -4,18 +4,39 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
-use App\Models\Book;
-use App\Models\Category;
-use App\Models\Favorite;
-use App\Models\Image;
-use App\Models\Like;
-use App\Models\Review;
+use App\Repositories\Book\BookRepositoryInterface;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\Favorite\FavoriteRepositoryInterface;
+use App\Repositories\Image\ImageRepositoryInterface;
+use App\Repositories\Like\LikeRepositoryInterface;
+use App\Repositories\Review\ReviewRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
+    protected $bookRepo;
+    protected $categoryRepo;
+    protected $imageRepo;
+    protected $reviewRepo;
+    protected $likeRepo;
+    protected $favoriteRepo;
+
+    public function __construct(
+        BookRepositoryInterface $bookRepo,
+        CategoryRepositoryInterface $categoryRepo,
+        ImageRepositoryInterface $imageRepo,
+        ReviewRepositoryInterface $reviewRepo,
+        LikeRepositoryInterface $likeRepo,
+        FavoriteRepositoryInterface $favoriteRepo
+    ) {
+        $this->bookRepo = $bookRepo;
+        $this->categoryRepo = $categoryRepo;
+        $this->imageRepo = $imageRepo;
+        $this->reviewRepo = $reviewRepo;
+        $this->likeRepo = $likeRepo;
+        $this->favoriteRepo = $favoriteRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +44,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with(['category', 'image'])->orderBy('updated_at', 'DESC')->paginate(config('app.paginate'));
+        $books = $this->bookRepo->getAllBooksWithCategoriesAndImages();
 
         return view('admin.books.index', compact('books'));
     }
@@ -35,8 +56,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        $categories = Category::whereNotIn('id', Category::distinct()->pluck('parent_id')->toArray())->get();
-        
+        $categories = $this->categoryRepo->getAllSubcategoriesWithBooks();
+
         return view('admin.books.create', compact('categories'));
     }
 
@@ -49,7 +70,7 @@ class BookController extends Controller
     public function store(StoreBookRequest $request)
     {
         $data = $request->all();
-        $book = Book::create($data);
+        $book = $this->bookRepo->create($data);
 
         $file = $data['image'];
         $image = [];
@@ -57,7 +78,7 @@ class BookController extends Controller
         $image['imageable_id'] = $book->id;
         $image['path'] = $book->id . '_' . $file->getClientOriginalName();
 
-        Image::create($image);
+        $this->imageRepo->create($image);
         $file->move(public_path('uploads/books'), $image['path']);
 
         return redirect()->route('books.index')->with('success', __('messages.add-book-success'));
@@ -71,8 +92,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::with(['category', 'image'])->findOrFail($id);
-        $reviews = Review::with('user.image', 'comments')->where('book_id', $id)->get();
+        $book = $this->bookRepo->getBookWithRelationsById($id, ['category', 'image']);
+        $reviews = $this->reviewRepo->getReviewsWithUsersAndCommentsAndLikesByBookId($id);
 
         return view('admin.books.show', compact('book', 'reviews'));
     }
@@ -85,8 +106,8 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book = Book::with(['category', 'image'])->findOrFail($id);
-        $categories = Category::whereNotIn('id', Category::distinct()->pluck('parent_id')->toArray())->get();
+        $book = $this->bookRepo->getBookWithRelationsById($id, ['category', 'image']);
+        $categories = $this->categoryRepo->getAllSubcategoriesWithBooks();
 
         return view('admin.books.edit', compact('book', 'categories'));
     }
@@ -100,12 +121,13 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, $id)
     {
-        $book = Book::with('image')->findOrFail($id);
-        $book->update($request->all());
+        $this->bookRepo->update($id, $request->all());
+
         if (isset($request->image)) {
             $file = $request->image;
             $path = $id . '_' . $file->getClientOriginalName();
-            Image::where('id', $book->image->id)->update(['path' => $path]);
+            $image = $this->bookRepo->getBookWithRelationsById($id, ['image'])->image;
+            $this->imageRepo->update($image->id, ['path' => $path]);
             $file->move(public_path('uploads/books'), $path);
         }
 
@@ -120,51 +142,32 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        Book::findOrFail($id)->delete();
+        $this->bookRepo->delete($id);
 
         return redirect()->route('books.index')->with('success', __('messages.delete-book-success'));
     }
 
     public function searchByCategory($category_id)
     {
-        $category = Category::findOrFail($category_id);
-
-        $books = Book::with('image')
-            ->where('category_id', $category_id)
-            ->addSelect([
-                'total_like' => Like::select(DB::raw('count(*)'))
-                ->whereColumn('books.id', 'likes.likeable_id')
-                ->where('likeable_type', 'App\Models\Book'),
-                'total_review' => Review::select(DB::raw('count(*)'))
-                ->whereColumn('books.id', 'reviews.book_id'),
-                'total_rate' => Review::select(DB::raw('sum(rate)'))
-                ->whereColumn('books.id', 'reviews.book_id'),
-            ])->get();
-
-        $categoryParents = session('categoryParents');
+        $category = $this->categoryRepo->find($category_id);
+        $books = $this->bookRepo->searchBooksByCategoryId($category_id);
         $categoryChildren = session('categoryChildren');
 
         if (Auth::check()) {
-            $likes = Like::where('user_id', Auth::id())
-                ->where('likeable_type', 'App\Models\Book')
-                ->pluck('likeable_id')
-                ->toArray();
-
-            $favorites = Favorite::where('user_id', Auth::id())->pluck('book_id')->toArray();
+            $likes = $this->likeRepo->getLikedBookIdsByUserId(Auth::id());
+            $favorites = $this->favoriteRepo->getFavoriteBookIdsByUserId(Auth::id());
 
             return view('user.search_book', compact([
                 'category',
                 'books',
                 'likes',
                 'favorites',
-                'categoryParents',
                 'categoryChildren',
             ]));
         } else {
             return view('user.search_book', compact([
                 'category',
                 'books',
-                'categoryParents',
                 'categoryChildren',
             ]));
         }
@@ -172,79 +175,73 @@ class BookController extends Controller
 
     public function getDetail($id)
     {
-        $book = Book::with(['category', 'image', 'likes'])->findOrFail($id);
-        $reviews = Review::with('comments', 'user', 'likes')
-            ->where('book_id', '=', $id)
-            ->orderBy('updated_at', 'DESC')
-            ->get();
+        $book = $this->bookRepo->getBookWithRelationsById($id, ['category', 'image', 'likes']);
+        $reviews = $this->reviewRepo->getReviewsWithUsersAndCommentsAndLikesByBookId($id);
         
         $avarageRating = 0;
+        $totalReviewDisplay = 0;
         if (count($reviews)) {
-            $totalScore = 0;
+            $totalRate = 0;
             foreach ($reviews as $review) {
-                $totalScore += $review['rate'];
+                if ($review['display'] == config('app.display')) {
+                    $totalRate += $review['rate'];
+                    $totalReviewDisplay += 1;
+                }
             }
-            $avarageRating = round($totalScore/count($reviews), config('app.two-decimal'));
+            if ($totalReviewDisplay > 0) {
+                $avarageRating = round($totalRate/$totalReviewDisplay, config('app.two-decimal'));
+            }
         }
 
         if (Auth::check()) {
-            $likeBook_ids = Like::where('user_id', Auth::id())
-                ->where('likeable_type', 'App\Models\Book')
-                ->where('likeable_id', $id)
-                ->pluck('likeable_id')
-                ->toArray();
+            $likedBook = false;
+            $favoritedBook = false;
+            if (count($this->likeRepo->getLikeOfUserForBook($id, Auth::id()))) {
+                $likedBook = true;
+            }
+            if (count($this->favoriteRepo->getFavoriteOfUserForBook($id, Auth::id()))) {
+                $favoritedBook = true;
+            }
 
-            $favoriteBook_ids = Favorite::where('user_id', Auth::id())
-                ->where('book_id', $id)
-                ->pluck('book_id')
-                ->toArray();
-
-            return view('book-detail', compact('book', 'likeBook_ids', 'favoriteBook_ids', 'reviews', 'avarageRating'));
+            return view('book-detail', compact([
+                'book',
+                'likedBook',
+                'favoritedBook',
+                'reviews',
+                'totalReviewDisplay',
+                'avarageRating',
+            ]));
         }
 
-        return view('book-detail', compact('book', 'reviews', 'avarageRating'));
+        return view('book-detail', compact([
+            'book',
+            'reviews',
+            'totalReviewDisplay',
+            'avarageRating',
+        ]));
     }
 
     public function searchByTitle(Request $request)
     {
         $title = $request->title;
-
-        $books = Book::with('image')
-            ->where('title', 'like', '%' . $title . '%')
-            ->addSelect([
-                'total_like' => Like::select(DB::raw('count(*)'))
-                ->whereColumn('books.id', 'likes.likeable_id')
-                ->where('likeable_type', 'App\Models\Book'),
-                'total_review' => Review::select(DB::raw('count(*)'))
-                ->whereColumn('books.id', 'reviews.book_id'),
-                'total_rate' => Review::select(DB::raw('sum(rate)'))
-                ->whereColumn('books.id', 'reviews.book_id'),
-            ])->get();
-
-        $categoryParents = session('categoryParents');
+        $books = $this->bookRepo->searchBooksByTitle($title);
         $categoryChildren = session('categoryChildren');
 
         if (Auth::check()) {
-            $likes = Like::where('user_id', Auth::id())
-                ->where('likeable_type', 'App\Models\Book')
-                ->pluck('likeable_id')
-                ->toArray();
-
-            $favorites = Favorite::where('user_id', Auth::id())->pluck('book_id')->toArray();
+            $likes = $this->likeRepo->getLikedBookIdsByUserId(Auth::id());
+            $favorites = $this->favoriteRepo->getFavoriteBookIdsByUserId(Auth::id());
 
             return view('user.index', compact([
                 'title',
                 'books',
                 'likes',
                 'favorites',
-                'categoryParents',
                 'categoryChildren',
             ]));
         } else {
             return view('user.index', compact([
                 'title',
                 'books',
-                'categoryParents',
                 'categoryChildren',
             ]));
         }

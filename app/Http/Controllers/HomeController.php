@@ -2,25 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
-use App\Models\Category;
-use App\Models\Favorite;
-use App\Models\Like;
-use App\Models\Review;
-use Illuminate\Http\Request;
+use App\Repositories\Book\BookRepositoryInterface;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\Favorite\FavoriteRepositoryInterface;
+use App\Repositories\Like\LikeRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
+    protected $bookRepo;
+    protected $categoryRepo;
+    protected $likeRepo;
+    protected $favoriteRepo;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(
+        BookRepositoryInterface $bookRepo,
+        CategoryRepositoryInterface $categoryRepo,
+        LikeRepositoryInterface $likeRepo,
+        FavoriteRepositoryInterface $favoriteRepo
+    ) {
+        $this->bookRepo = $bookRepo;
+        $this->categoryRepo = $categoryRepo;
+        $this->likeRepo = $likeRepo;
+        $this->favoriteRepo = $favoriteRepo;
     }
 
     /**
@@ -30,36 +39,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $books = Book::with('image')
-            ->addSelect([
-                'total_like' => Like::select(DB::raw('count(*)'))
-                ->whereColumn('books.id', 'likes.likeable_id')
-                ->where('likeable_type', 'App\Models\Book'),
-                'total_review' => Review::select(DB::raw('count(*)'))
-                ->whereColumn('books.id', 'reviews.book_id'),
-                'total_rate' => Review::select(DB::raw('sum(rate)'))
-                ->whereColumn('books.id', 'reviews.book_id'),
-            ])->get();
-
-        $categoryParents = Category::all()->where('parent_id', '=', config('app.category_parent_id'));
-        $categoryChildren = Category::with('books')->where('parent_id', '!=', config('app.category_parent_id'))->get();
-
-        session([
-            'categoryParents' => $categoryParents,
-            'categoryChildren' => $categoryChildren,
-        ]);
+        $books = $this->bookRepo->getAllBooksWithImagesAndLikesAndRates();
+        $categoryChildren = $this->categoryRepo->getAllSubcategoriesWithBooks();
+        session(['categoryChildren' => $categoryChildren]);
 
         if (Auth::check()) {
-            $likes = Like::where('user_id', Auth::id())
-                ->where('likeable_type', 'App\Models\Book')
-                ->pluck('likeable_id')
-                ->toArray();
+            $likes = $this->likeRepo->getLikedBookIdsByUserId(Auth::id());
+            $favorites = $this->favoriteRepo->getFavoriteBookIdsByUserId(Auth::id());
 
-            $favorites = Favorite::where('user_id', Auth::id())->pluck('book_id')->toArray();
-
-            return view('user.index', compact('books', 'likes', 'favorites', 'categoryParents', 'categoryChildren'));
+            return view('user.index', compact('books', 'likes', 'favorites', 'categoryChildren'));
         } else {
-            return view('user.index', compact('books', 'categoryParents', 'categoryChildren'));
+            return view('user.index', compact('books', 'categoryChildren'));
         }
     }
 
