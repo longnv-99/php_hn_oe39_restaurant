@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\FollowNotification;
 use App\Repositories\Follow\FollowRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FollowController extends Controller
 {
     protected $followRepo;
+    protected $userRepo;
 
-    public function __construct(FollowRepositoryInterface $followRepo)
+    public function __construct(FollowRepositoryInterface $followRepo, UserRepositoryInterface $userRepo)
     {
         $this->followRepo = $followRepo;
+        $this->userRepo = $userRepo;
     }
     /**
      * Display a listing of the resource.
@@ -52,6 +56,9 @@ class FollowController extends Controller
         } else {
             $this->followRepo->restoreRelationship(Auth::id(), $request->id);
         }
+
+        $followed_user = $this->userRepo->find($request->id);
+        $followed_user->notify(new FollowNotification(Auth::user(), $followed_user));
 
         return json_encode(['statusCode' => 200]);
     }
