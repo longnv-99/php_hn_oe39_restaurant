@@ -75,12 +75,16 @@
         </div>
     </div>
 
+    <script src="{{ asset('bower_components/adminLTE/plugins/jquery/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bower_components/adminLTE/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('bower_components/adminLTE/dist/js/pusher.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('js/home.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/like_and_favorite.js') }}"></script>
-
+    @translations
+    <script src="{{ asset('js/realtime-follow-notify.js') }}"></script>
 </body>
 
 </html>

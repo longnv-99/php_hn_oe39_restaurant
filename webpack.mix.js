@@ -20,5 +20,6 @@ mix.js('resources/js/home.js', 'public/js')
     .js('resources/js/manage_review_comment.js', 'public/js')
     .js('resources/js/profile.js', 'public/js')
     .js('resources/js/like_and_favorite.js', 'public/js')
+    .js('resources/js/realtime-follow-notify.js', 'public/js')
     .postCss('resources/css/home.css', 'public/css')
     .postCss('resources/css/manage_review_comment.css', 'public/css');

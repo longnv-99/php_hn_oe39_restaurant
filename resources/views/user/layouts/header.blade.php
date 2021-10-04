@@ -16,8 +16,10 @@
             </a>
         </li>
         @if (Auth::check())
+            <input hidden id="user_id" value="{{ Auth::id() }}" />
             <li class="nav-item">
-                <p id="navbarDropdown" class="nav-item dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <p id="navbarDropdown" class="nav-item dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false" v-pre>
                     <img src="{{ asset('uploads/users/' . Auth::user()->image->path) }}" id="user-img" class="img-circle elevation-2" alt="User Image">
                     {{ Auth::user()->username }}
                 </p>
@@ -35,7 +37,35 @@
                         @csrf
                     </form>
                 </div>
-            </li>    
+            </li>
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge notification-count">
+                        {{ Auth::user()->unreadNotifications->count() }}
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right menu-notification">
+                    @foreach (Auth::user()->notifications as $notification)
+                        @if ($notification->type == 'App\Notifications\FollowNotification')
+                            @php
+                                $id_user = $notification->data['user']['id'];
+                            @endphp
+                            <a href="{{ route('users.show',  $id_user) }}" class="dropdown-item">
+                                <i class="fas fa-user-friends mr-2"></i>
+                                <span>
+                                    {{ $notification->data['user']['username'] }}
+                                    {{ __('messages.follow') }}
+                                </span>
+                                <span class="float-right text-muted text-sm">{{ $notification->created_at->format('d-m-y') }}</span>
+                            </a>
+                        @endif
+                    @endforeach
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">{{ __('messages.see-all-noti') }}</a>
+                </div>
+            </li>  
         @else
             <li class="nav-item">
                 <a class="dropdown-item" href="{{ route('login') }}">
