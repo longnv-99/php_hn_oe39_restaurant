@@ -8,6 +8,8 @@ interface FavoriteRepositoryInterface extends RepositoryInterface
 {
     public function getFavoriteBookIdsByUserId($user_id);
 
+    public function getUserIdsByFavoriteBookId($book_id);
+
     public function getFavoriteOfUserForBook($book_id, $user_id);
 
     public function forceDeleteFavorite($book_id, $user_id);

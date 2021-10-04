@@ -52,8 +52,10 @@ Route::group(['middleware' => 'auth'], function () {
         'store', 'destroy'
     ]);
     Route::resource('favorites', FavoriteController::class)->only([
-        'index', 'store', 'destroy'
+        'store', 'destroy'
     ]);
+
+    Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index')->middleware('markNotiRead');
 
     Route::get('users/{user}', [UserController::class, 'show'])->name('users.show')->middleware('markNotiRead');
     

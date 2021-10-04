@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Notifications\BookNotification;
+use App\Notifications\FavoriteBookNotification;
 use App\Repositories\Book\BookRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Favorite\FavoriteRepositoryInterface;
 use App\Repositories\Image\ImageRepositoryInterface;
 use App\Repositories\Like\LikeRepositoryInterface;
 use App\Repositories\Review\ReviewRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Pusher\Pusher;
 
 class BookController extends Controller
 {
@@ -21,6 +26,7 @@ class BookController extends Controller
     protected $reviewRepo;
     protected $likeRepo;
     protected $favoriteRepo;
+    protected $userRepo;
 
     public function __construct(
         BookRepositoryInterface $bookRepo,
@@ -28,7 +34,8 @@ class BookController extends Controller
         ImageRepositoryInterface $imageRepo,
         ReviewRepositoryInterface $reviewRepo,
         LikeRepositoryInterface $likeRepo,
-        FavoriteRepositoryInterface $favoriteRepo
+        FavoriteRepositoryInterface $favoriteRepo,
+        UserRepositoryInterface $userRepo
     ) {
         $this->bookRepo = $bookRepo;
         $this->categoryRepo = $categoryRepo;
@@ -36,6 +43,7 @@ class BookController extends Controller
         $this->reviewRepo = $reviewRepo;
         $this->likeRepo = $likeRepo;
         $this->favoriteRepo = $favoriteRepo;
+        $this->userRepo = $userRepo;
     }
     /**
      * Display a listing of the resource.
@@ -142,6 +150,13 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
+        $userIds = $this->favoriteRepo->getUserIdsByFavoriteBookId($id);
+        $book = $this->bookRepo->find($id);
+
+        foreach ($userIds as $user_id) {
+            $user = $this->userRepo->find($user_id);
+            Notification::send($user, new FavoriteBookNotification($user, $book));
+        }
         $this->bookRepo->delete($id);
 
         return redirect()->route('books.index')->with('success', __('messages.delete-book-success'));

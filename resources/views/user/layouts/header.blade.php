@@ -16,7 +16,7 @@
             </a>
         </li>
         @if (Auth::check())
-            <input hidden id="user_id" value="{{ Auth::id() }}" />
+            <input hidden id="user_id" value="{{ Auth::id() }}"/>
             <li class="nav-item">
                 <p id="navbarDropdown" class="nav-item dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false" v-pre>
@@ -38,34 +38,48 @@
                     </form>
                 </div>
             </li>
-            
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge notification-count">
-                        {{ Auth::user()->unreadNotifications->count() }}
-                    </span>
+                    <span class="badge badge-warning navbar-badge notification-count">{{ count(Auth::user()->unreadNotifications) }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right menu-notification">
                     @foreach (Auth::user()->notifications as $notification)
+                        @if ($notification->type == 'App\Notifications\FavoriteBookNotification')
+                            @php
+                                $noti_id = $notification->id;
+                            @endphp
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item @if ($notification->read_at) read-noti @endif"
+                                href="{{ route('favorites.index', ['markRead'=>$noti_id]) }}">
+                                <i class="fas fa-book mr-2"> {{ __('messages.favorite-books') }}</i>
+                                <div>
+                                    {{ $notification->data['book']['title'] }}
+                                </div>
+                                <span class="float-right text-muted text-sm">
+                                    {{ __('messages.has-been-deleted') }} {{ $notification->created_at->format('d-m-y H:i') }}
+                                </span>
+                            </a>
+                        @endif
                         @if ($notification->type == 'App\Notifications\FollowNotification')
                             @php
                                 $id_user = $notification->data['user']['id'];
                                 $noti_id = $notification->id;
                             @endphp
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item @if ($notification->read_at) read-noti @endif"
                                 href="{{ route('users.show', ['user'=> $id_user, 'markRead'=>$noti_id]) }}">
                                 <i class="fas fa-user-friends mr-2"></i>
                                 <span>
                                     {{ $notification->data['user']['username'] }}
-                                    {{ __('messages.followed') }}
+                                    {{ __('messages.followed-you') }}
                                 </span>
-                                <span class="float-right text-muted text-sm">{{ $notification->created_at->format('d-m-y') }}</span>
+                                <span class="float-right text-muted text-sm">{{ $notification->created_at->format('d-m-y H:i') }}</span>
                             </a>
                         @endif
                     @endforeach
                 </div>
-            </li>  
+            </li>
         @else
             <li class="nav-item">
                 <a class="dropdown-item" href="{{ route('login') }}">

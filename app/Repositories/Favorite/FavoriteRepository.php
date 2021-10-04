@@ -18,6 +18,12 @@ class FavoriteRepository extends BaseRepository implements FavoriteRepositoryInt
             ->pluck('book_id')->toArray();
     }
 
+    public function getUserIdsByFavoriteBookId($book_id)
+    {
+        return $this->model->where('book_id', $book_id)
+            ->pluck('user_id')->toArray();
+    }
+
     public function getFavoriteOfUserForBook($book_id, $user_id)
     {
         return $this->model->where('user_id', $user_id)

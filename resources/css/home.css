@@ -1,5 +1,5 @@
 .read-noti {
-    opacity: 0.2;
+    opacity: 0.5;
 }
 
 .menu-notification.show {
@@ -140,4 +140,7 @@ img.review-thumbnail {
 .rate>input:checked~label:hover~label,
 .rate>label:hover~input:checked~label {
     color: #c59b08;
+}
+.dropdown-menu-lg .dropdown-item {
+    padding: 1.5rem 1rem;
 }
