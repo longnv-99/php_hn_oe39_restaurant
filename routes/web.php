@@ -55,7 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
         'index', 'store', 'destroy'
     ]);
 
-    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show')->middleware('markNotiRead');
     
     Route::get('reviews/rate/{review}', [ReviewController::class, 'rate'])->name('reviews.rate');
 });
