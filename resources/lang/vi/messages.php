@@ -110,4 +110,5 @@ return [
     'deny-update-comment' => 'Bạn không có quyền sửa comment này',
     'deny-delete-comment' => 'Bạn không có quyền xóa comment này',
     'book-reviewing-system' => 'Hệ Thống Đánh Giá Sách',
+    'followed' => 'đã theo dõi bạn.',
 ];

@@ -14,16 +14,15 @@ Pusher.logToConsole = true;
 let id = $('#user_id').val();
 let translator = new I18n;
 
-let today = new Date();
-let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-
-let currentNotiCount = $('.notification-count').text();
-
 echo.private(`users.${id}`).notification((notification) => {
+    let today = new Date();
+    let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+    let currentNotiCount = $('.notification-count').text();
+
     var newNotificationHtml = `
-            <a href="{{ route('users.show', ${notification.user['id']}) }}" class="dropdown-item">
+            <a href="/users/${notification.user['id']}/?markRead=${notification.id}" class="dropdown-item">
                 <i class="fas fa-user-friends mr-2"></i>
-                <span>${notification.user['username']} ` + translator.trans('messages.follow') +
+                <span>${notification.user['username']} ` + translator.trans('messages.followed') +
             `   </span>
                 <span class="float-right text-muted text-sm">${date}</span>
             </a>

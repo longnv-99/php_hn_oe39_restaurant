@@ -51,19 +51,19 @@
                         @if ($notification->type == 'App\Notifications\FollowNotification')
                             @php
                                 $id_user = $notification->data['user']['id'];
+                                $noti_id = $notification->id;
                             @endphp
-                            <a href="{{ route('users.show',  $id_user) }}" class="dropdown-item">
+                            <a class="dropdown-item @if ($notification->read_at) read-noti @endif"
+                                href="{{ route('users.show', ['user'=> $id_user, 'markRead'=>$noti_id]) }}">
                                 <i class="fas fa-user-friends mr-2"></i>
                                 <span>
                                     {{ $notification->data['user']['username'] }}
-                                    {{ __('messages.follow') }}
+                                    {{ __('messages.followed') }}
                                 </span>
                                 <span class="float-right text-muted text-sm">{{ $notification->created_at->format('d-m-y') }}</span>
                             </a>
                         @endif
                     @endforeach
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">{{ __('messages.see-all-noti') }}</a>
                 </div>
             </li>  
         @else
