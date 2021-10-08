@@ -92,6 +92,7 @@ return [
     'follow' => 'Follow',
     'unfollow' => 'Unfollow',
     'follower' => 'Follower',
+    'followed-you' => 'has followed you',
     'review' => 'Review',
     'review-list' => 'Review List',
     'favorite' => 'Favorite',
@@ -110,5 +111,5 @@ return [
     'deny-update-comment' => 'You do not have right to update this comment',
     'deny-delete-comment' => 'You do not have right to delete this comment',
     'book-reviewing-system' => 'Book Reviewing System',
-    'followed' => 'followed you.',
+    'has-been-deleted' => 'has been deleted',
 ];

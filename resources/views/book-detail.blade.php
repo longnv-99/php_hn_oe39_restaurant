@@ -215,7 +215,7 @@
 										<div class="flex-grow-1 ms-2 ms-sm-3">
 											<div class="reply-meta d-flex align-items-baseline">
 											<h6 class="mb-0 me-2 ml-2 mr-2">
-												<a href="{{ route('users.show', $review->user) }}">
+												<a href="{{ route('users.show', $comment->user) }}">
 												{{ $comment->user->username }}
 												</a>          
 											</h6>

@@ -92,6 +92,7 @@ return [
     'follow' => 'Theo dõi',
     'unfollow' => 'Bỏ theo dõi',
     'follower' => 'Người theo dõi',
+    'followed-you' => 'đã theo dõi bạn',
     'review' => 'Đánh giá',
     'review-list' => 'Danh sách đánh giá',
     'favorite' => 'Yêu thích',
@@ -110,5 +111,5 @@ return [
     'deny-update-comment' => 'Bạn không có quyền sửa comment này',
     'deny-delete-comment' => 'Bạn không có quyền xóa comment này',
     'book-reviewing-system' => 'Hệ Thống Đánh Giá Sách',
-    'followed' => 'đã theo dõi bạn.',
+    'has-been-deleted' => 'đã bị xóa',
 ];

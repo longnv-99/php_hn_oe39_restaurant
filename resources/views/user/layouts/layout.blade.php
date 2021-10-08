@@ -75,7 +75,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('bower_components/adminLTE/plugins/jquery/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bower_components/adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -85,6 +84,8 @@
     <script src="{{ asset('js/like_and_favorite.js') }}"></script>
     @translations
     <script src="{{ asset('js/realtime-follow-notify.js') }}"></script>
+    <script src="{{ asset('js/notify_when_favorite_book_deleted.js') }}"></script>
+
 </body>
 
 </html>

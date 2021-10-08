@@ -56,6 +56,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         return $this->prepareGetAllBooks()
             ->join('favorites', 'favorites.book_id', 'books.id')
             ->where('user_id', $user_id)
+            ->whereNull('favorites.deleted_at')
             ->get();
     }
 }

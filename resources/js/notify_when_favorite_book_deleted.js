@@ -11,26 +11,32 @@ const echo = new Echo({
 });
 
 Pusher.logToConsole = true;
+
 let id = $('#user_id').val();
 let translator = new I18n;
 
-echo.private(`users.${id}`).notification((notification) => {
+echo.private(`favorite_book.${id}`).notification((notification) => {
     let today = new Date();
     let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear() + ' '
         + today.getHours() + ':' + today.getMinutes();
     let currentNotiCount = $('.notification-count').text();
 
-    var newNotificationHtml = `
-            <div class="dropdown-divider"></div>
-            <a href="/users/${notification.user['id']}/?markRead=${notification.id}" class="dropdown-item">
-                <i class="fas fa-user-friends mr-2"></i>
-                <span>${notification.user['username']} ` + translator.trans('messages.followed-you') +
-            `   </span>
-                <span class="float-right text-muted text-sm">${date}</span>
-            </a>
-        `;
-
-    $('.menu-notification').prepend(newNotificationHtml);
+    var bookNotificationHtml = `
+        <div class="dropdown-divider"></div>
+        <a href="/favorites/?markRead=${notification.id}" class="dropdown-item">
+            <i class="fas fa-book mr-2"> ` + 
+                translator.trans('messages.favorite-books') + 
+            `</i>
+            <div>
+                ${notification.book['title']}
+            </div>
+            <span class="float-right text-muted text-sm">` +
+                translator.trans('messages.has-been-deleted') +
+                ` ${date}
+            </span>
+        </a>
+    `;
+    $('.menu-notification').prepend(bookNotificationHtml);
     currentNotiCount++;
     $('.notification-count').text(currentNotiCount);
 });
