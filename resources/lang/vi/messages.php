@@ -96,7 +96,7 @@ return [
     'review' => 'Đánh giá',
     'review-list' => 'Danh sách đánh giá',
     'favorite' => 'Yêu thích',
-    'rate' => 'Đánh giá',
+    'rate' => 'Số sao',
     'leave-a-review' => 'Để lại đánh giá về quyển sách',
     'leave-a-comment' => 'Để lại bình luận về đánh giá này',
     'comment' => 'Bình luận',
@@ -112,4 +112,7 @@ return [
     'deny-delete-comment' => 'Bạn không có quyền xóa comment này',
     'book-reviewing-system' => 'Hệ Thống Đánh Giá Sách',
     'has-been-deleted' => 'đã bị xóa',
+    'favorite-book-reviews-statistic' => 'Thống kê review sách yêu thích',
+    'hello' => 'Xin chào',
+    'announce-list-reviews' => 'Tất cả những đánh giá về sách yêu thích của bạn trong tuần qua',
 ];

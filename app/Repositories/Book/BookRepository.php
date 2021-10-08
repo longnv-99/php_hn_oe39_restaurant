@@ -26,7 +26,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
 
     public function prepareGetAllBooks()
     {
-        return $this->model->with(['image', 'likes', 'reviews'])
+        return $this->model->with(['image', 'likes', 'reviews.user'])
             ->withCount('likes as total_like')
             ->withCount('reviews as total_review')
             ->withSum('reviews as total_rate', 'rate');

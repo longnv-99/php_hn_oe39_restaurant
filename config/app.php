@@ -139,8 +139,6 @@ return [
 
     'paginate' => 5,
 
-    'category_parent_id' => 0,
-    
     'two-decimal' => 2,
 
     'max-rating' => 5,
@@ -152,6 +150,8 @@ return [
     'three-star' => 3,
     
     'four-star' => 4,
+
+    'schedule_time' => '20:00',
 
     /*
     |--------------------------------------------------------------------------

@@ -112,4 +112,7 @@ return [
     'deny-delete-comment' => 'You do not have right to delete this comment',
     'book-reviewing-system' => 'Book Reviewing System',
     'has-been-deleted' => 'has been deleted',
+    'favorite-book-reviews-statistic' => 'Favorite book reviews statistic',
+    'hello' => 'Hello',
+    'announce-list-reviews' => 'Here are all the reviews of your favorite books from the past week',
 ];
