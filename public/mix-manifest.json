@@ -7,6 +7,8 @@
     "/js/like_and_favorite.js": "/js/like_and_favorite.js",
     "/js/realtime-follow-notify.js": "/js/realtime-follow-notify.js",
     "/js/notify_when_favorite_book_deleted.js": "/js/notify_when_favorite_book_deleted.js",
+    "/js/chart.min.js": "/js/chart.min.js",
+    "/js/book_statistic.js": "/js/book_statistic.js",
     "/css/app.css": "/css/app.css",
     "/css/manage_review_comment.css": "/css/manage_review_comment.css",
     "/css/home.css": "/css/home.css"

@@ -115,4 +115,8 @@ return [
     'favorite-book-reviews-statistic' => 'Favorite book reviews statistic',
     'hello' => 'Hello',
     'announce-list-reviews' => 'Here are all the reviews of your favorite books from the past week',
+    'book-statistic' => 'Book Statistic',
+    'like-statistic' => 'Like Statistic',
+    'review-statistic' => 'Review Statistic',
+    'comment-statistic' => 'Comment Statistic',
 ];

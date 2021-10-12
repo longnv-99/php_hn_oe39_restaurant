@@ -19,4 +19,6 @@ interface BookRepositoryInterface extends RepositoryInterface
     public function searchBooksByTitle($title);
 
     public function getFavoriteBooksByUserId($user_id);
+
+    public function getNumberOfCommentsOfBook();
 }

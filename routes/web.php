@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('reviews/view/{review}', [ReviewController::class, 'view'])->name('reviews.view');
     Route::get('comments/hide/{comment}', [CommentController::class, 'hide'])->name('comments.hide');
     Route::get('comments/view/{comment}', [CommentController::class, 'view'])->name('comments.view');
+    Route::get('books/statistic', [BookController::class, 'statistic'])->name('books.statistic');
     Route::resource('books', BookController::class);
 });
 Route::group(['middleware' => 'auth'], function () {

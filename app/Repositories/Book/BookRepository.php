@@ -4,6 +4,7 @@ namespace App\Repositories\Book;
 
 use App\Models\Book;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\DB;
 
 class BookRepository extends BaseRepository implements BookRepositoryInterface
 {
@@ -57,6 +58,16 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
             ->join('favorites', 'favorites.book_id', 'books.id')
             ->where('user_id', $user_id)
             ->whereNull('favorites.deleted_at')
+            ->get();
+    }
+
+    public function getNumberOfCommentsOfBook()
+    {
+        return $this->model
+            ->join('reviews', 'reviews.book_id', 'books.id')
+            ->join('comments', 'comments.review_id', 'reviews.id')
+            ->select('books.title', DB::raw('count(*) as total_cmt'))
+            ->groupBy('books.id', 'books.title')
             ->get();
     }
 }

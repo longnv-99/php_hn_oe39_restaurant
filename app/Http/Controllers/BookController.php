@@ -261,4 +261,12 @@ class BookController extends Controller
             ]));
         }
     }
+
+    public function statistic()
+    {
+        $books = json_encode($this->bookRepo->getAllBooksWithImagesAndLikesAndRates());
+        $bookComments = json_encode($this->bookRepo->getNumberOfCommentsOfBook());
+
+        return view('admin.books.book_statistic', compact('books', 'bookComments'));
+    }
 }
