@@ -144,3 +144,6 @@ img.review-thumbnail {
 .dropdown-menu-lg .dropdown-item {
     padding: 1.5rem 1rem;
 }
+#like-chart, #review-chart, #comment-chart {
+    max-height: 500px;
+}

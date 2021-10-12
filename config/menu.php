@@ -16,4 +16,9 @@ return [
         'route' => 'books.index',
         'icon' => 'fa-book-open',
     ],
+    [
+        'label' => 'book-statistic',
+        'route' => 'books.statistic',
+        'icon' => 'fa-chart-bar',
+    ],
 ];

@@ -115,4 +115,8 @@ return [
     'favorite-book-reviews-statistic' => 'Thống kê review sách yêu thích',
     'hello' => 'Xin chào',
     'announce-list-reviews' => 'Tất cả những đánh giá về sách yêu thích của bạn trong tuần qua',
+    'book-statistic' => 'Thống Kê Sách',
+    'like-statistic' => 'Thống kê số lượt thích',
+    'review-statistic' => 'Thống kê số lượt đánh giá',
+    'comment-statistic' => 'Thống kê số lượt bình luận',
 ];
