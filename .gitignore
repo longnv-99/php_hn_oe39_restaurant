@@ -14,3 +14,11 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/public/css/*
+/public/js/*
+/public/uploads
+/public/scss/*
+/storage/framework/cache
+/storage/framework/sessions
+/public/uploads/
+/coverage/*

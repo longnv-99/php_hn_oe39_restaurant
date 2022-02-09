@@ -1,0 +1,7 @@
+.review-content, .comment-content{
+    display: block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: rgb(194, 194, 194);
+}

@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -123,6 +123,36 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'is_active' => 1,
+
+    'is_inactive' => 0,
+
+    'user_role_id' => 2,
+
+    'admin_role_id' => 1,
+
+    'default_avatar_path' => 'default-ava.jpg',
+
+    'display' => 1,
+
+    'non-display' => 0,
+
+    'paginate' => 5,
+
+    'two-decimal' => 2,
+
+    'max-rating' => 5,
+
+    'one-star' => 1,
+
+    'two-star' => 2,
+
+    'three-star' => 3,
+    
+    'four-star' => 4,
+
+    'schedule_time' => '20:00',
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -171,7 +201,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
